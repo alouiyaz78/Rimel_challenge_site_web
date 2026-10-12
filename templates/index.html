@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rimel Challenge 2026</title>
+    <title>Rimel Challenge 2026 - Sportsense</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom scrollbar for chat history */
         #chatHistory::-webkit-scrollbar {
             width: 6px;
         }
@@ -16,61 +15,125 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
-    <header class="bg-green-800 text-white py-4 text-center">
-        <h1 class="text-3xl font-bold">🌲 Rimel Challenge 2026</h1>
+<body class="bg-gray-100 min-h-screen flex flex-col font-sans">
+    <header class="bg-emerald-800 text-white shadow-md py-4 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">🌲 Rimel Challenge 2026</h1>
+                <p class="text-xs sm:text-sm text-emerald-200">Événement officiel organisé par Sportsense</p>
+            </div>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-700 text-emerald-100 border border-emerald-600">
+                Forêt de Rimel &bull; Bizerte
+            </span>
+        </div>
     </header>
 
-    <main class="flex flex-col md:flex-row flex-1 p-4 gap-4">
-        <!-- FAQ Section -->
-        <section class="md:w-1/3 bg-white rounded-lg shadow p-4 flex flex-col">
-            <h2 class="text-xl font-semibold mb-4">FAQ</h2>
-            <div class="space-y-2">
-                <details class="border rounded p-2 bg-gray-50">
-                    <summary class="font-medium cursor-pointer">Gobelets réutilisables obligatoires</summary>
-                    <p class="mt-2 text-sm">
-                        Le gobelet réutilisable personnel est OBLIGATOIRE ♻️ Aucun gobelet jetable n'est fourni sur les ravitaillements. Les emballages de gels et barres doivent être conservés sur soi, sous peine de disqualification.
+    <main class="max-w-7xl w-full mx-auto p-4 sm:p-6 flex-1 grid grid-cols-1 md:grid-cols-12 gap-6">
+        <!-- FAQ Section (Colonne gauche) -->
+        <section class="md:col-span-5 bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex flex-col">
+            <div class="flex items-center space-x-2 mb-4 pb-2 border-b border-gray-100">
+                <svg class="w-6 h-6 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-lg font-bold text-gray-800">FAQ Officielle</h2>
+            </div>
+
+            <div class="space-y-3 overflow-y-auto pr-1">
+                <!-- Parcours & Tarifs -->
+                <details class="group border border-gray-200 rounded-lg p-3 bg-gray-50/60 hover:bg-gray-50 transition" open>
+                    <summary class="font-semibold text-gray-800 cursor-pointer flex justify-between items-center list-none">
+                        <span>🏃 Parcours &amp; Tarifs</span>
+                        <span class="transition group-open:rotate-180 text-gray-500 text-xs">▼</span>
+                    </summary>
+                    <p class="mt-2 text-sm text-gray-700 leading-relaxed border-t border-gray-200/80 pt-2">
+                        10 km Découverte (15 DT), Mini-Trail 10 km chrono (20 DT), Trail 22 km (35 DT, 1 pt ITRA), Ultra-Trail 50 km (100 DT avec maillot, 2 pts ITRA), Kids 1 km (10 DT).
                     </p>
                 </details>
-                <details class="border rounded p-2 bg-gray-50">
-                    <summary class="font-medium cursor-pointer">Horaires de départ 10K/25K</summary>
-                    <p class="mt-2 text-sm">
-                        Les horaires officiels des départs 10K et 25K sont publiés dans le règlement officiel. Prévoyez d'arriver au moins 45 minutes avant le premier départ.
+
+                <!-- Horaires de départ -->
+                <details class="group border border-gray-200 rounded-lg p-3 bg-gray-50/60 hover:bg-gray-50 transition">
+                    <summary class="font-semibold text-gray-800 cursor-pointer flex justify-between items-center list-none">
+                        <span>⏰ Horaires de départ</span>
+                        <span class="transition group-open:rotate-180 text-gray-500 text-xs">▼</span>
+                    </summary>
+                    <p class="mt-2 text-sm text-gray-700 leading-relaxed border-t border-gray-200/80 pt-2">
+                        Ouverture à 06h30. Départ 50 km à 07h00. Briefing 10 km et 22 km à 08h15, départ groupé à 08h30. Départ Kids (1 km) à 08h45.
                     </p>
                 </details>
-                <details class="border rounded p-2 bg-gray-50">
-                    <summary class="font-medium cursor-pointer">Retrait des dossards</summary>
-                    <p class="mt-2 text-sm">
-                        Les lieux et créneaux de retrait des dossards sont précisés dans le règlement officiel. Munissez-vous d'une pièce d'identité.
-                    </p>
+
+                <!-- Hébergement & Navette -->
+                <details class="group border border-gray-200 rounded-lg p-3 bg-gray-50/60 hover:bg-gray-50 transition">
+                    <summary class="font-semibold text-gray-800 cursor-pointer flex justify-between items-center list-none">
+                        <span>🛏️ Hébergement (30 DT) &amp; Navette (10 DT)</span>
+                        <span class="transition group-open:rotate-180 text-gray-500 text-xs">▼</span>
+                    </summary>
+                    <div class="mt-2 text-sm text-gray-700 space-y-2 border-t border-gray-200/80 pt-2">
+                        <p><strong>Hébergement :</strong> Formule officielle Hébergement + petit-déjeuner à 30 DT (Sportsense.tn) ou hôtels sur la corniche de Bizerte.</p>
+                        <p><strong>Navette :</strong> Navette officielle aller-retour Tunis / Village du Trail à 10 DT.</p>
+                    </div>
                 </details>
-                <details class="border rounded p-2 bg-gray-50">
-                    <summary class="font-medium cursor-pointer">Urgences forêt 198</summary>
-                    <p class="mt-2 text-sm">
-                        🚨 Urgence / feu de forêt : appelez la Protection Civile au 198. Il est formellement interdit de fumer, de jeter des mégots ou d'allumer du feu dans la forêt de Rimel.
-                    </p>
+
+                <!-- Règle gobelet & Urgence 198 -->
+                <details class="group border border-gray-200 rounded-lg p-3 bg-gray-50/60 hover:bg-gray-50 transition">
+                    <summary class="font-semibold text-gray-800 cursor-pointer flex justify-between items-center list-none">
+                        <span>♻️ Règle gobelet &amp; Urgence 198</span>
+                        <span class="transition group-open:rotate-180 text-gray-500 text-xs">▼</span>
+                    </summary>
+                    <div class="mt-2 text-sm text-gray-700 space-y-2 border-t border-gray-200/80 pt-2">
+                        <p>Le gobelet réutilisable personnel est OBLIGATOIRE ♻️. Aucun gobelet jetable n'est fourni sur les ravitaillements.</p>
+                        <p class="text-rose-700 font-medium">Protection civile au 198 en cas d'urgence en forêt de Rimel.</p>
+                    </div>
                 </details>
             </div>
         </section>
 
-        <!-- Chatbot Section -->
-        <section class="md:w-2/3 bg-white rounded-lg shadow p-4 flex flex-col">
-            <h2 class="text-xl font-semibold mb-4">Chatbot</h2>
-            <div id="chatHistory" class="flex-1 overflow-y-auto mb-4 p-2 border rounded bg-gray-50"></div>
-            <form id="chatForm" class="flex items-center space-x-2">
-                <input type="text" id="userQuery" placeholder="Posez une question (accès, règles, forêt)..." class="flex-1 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" autocomplete="off" />
-                <button type="submit" class="bg-green-800 text-white px-4 py-2 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+        <!-- Chatbot Section (Colonne droite) -->
+        <section class="md:col-span-7 bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex flex-col h-[620px]">
+            <div class="flex items-center justify-between mb-4 pb-2 border-b border-gray-100">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-6 h-6 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    <h2 class="text-lg font-bold text-gray-800">Assistant Trail</h2>
+                </div>
+                <span class="text-xs bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-medium border border-emerald-200">En direct</span>
+            </div>
+
+            <div id="chatHistory" class="flex-1 overflow-y-auto mb-4 p-3 rounded-lg bg-gray-50 border border-gray-200 space-y-3">
+                <div class="text-left">
+                    <div class="inline-block bg-white text-gray-800 px-4 py-2.5 rounded-2xl rounded-tl-sm text-sm shadow-sm border border-gray-200 max-w-[85%]">
+                        👋 Bonjour ! Posez-moi vos questions sur le Rimel Challenge (tarifs, horaires, navettes, matériel...).
+                    </div>
+                </div>
+            </div>
+
+            <form id="chatForm" class="flex items-center gap-2">
+                <input
+                    type="text"
+                    id="userQuery"
+                    placeholder="Posez votre question (ex: prix du 22 km, navette...)"
+                    class="flex-1 border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition"
+                    autocomplete="off"
+                    required
+                />
+                <button
+                    type="submit"
+                    id="sendBtn"
+                    class="bg-emerald-700 text-white font-medium px-5 py-2.5 text-sm rounded-lg hover:bg-emerald-800 transition focus:outline-none focus:ring-2 focus:ring-emerald-600 flex items-center justify-center disabled:opacity-50"
+                >
                     Envoyer
                 </button>
             </form>
-            <div id="loading" class="hidden mt-2 flex items-center space-x-2 text-green-800">
-                <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+
+            <div id="loading" class="hidden mt-3 flex items-center space-x-2 text-emerald-800 text-xs font-medium">
+                <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
                 </svg>
-                <span>Recherche en cours...</span>
+                <span>Recherche de la réponse...</span>
             </div>
-            <div id="error" class="hidden mt-2 text-red-600"></div>
+
+            <div id="error" class="hidden mt-2 p-2 bg-rose-50 text-rose-700 text-xs rounded border border-rose-200"></div>
         </section>
     </main>
 
@@ -80,13 +143,20 @@
         const userQuery = document.getElementById('userQuery');
         const loading = document.getElementById('loading');
         const errorDiv = document.getElementById('error');
+        const sendBtn = document.getElementById('sendBtn');
 
         function appendMessage(sender, text) {
             const msgDiv = document.createElement('div');
-            msgDiv.className = sender === 'user' ? 'text-right mb-2' : 'text-left mb-2';
+            msgDiv.className = sender === 'user' ? 'text-right' : 'text-left';
+
             const bubble = document.createElement('div');
-            bubble.className = sender === 'user' ? 'inline-block bg-green-200 text-gray-800 px-3 py-2 rounded-lg' : 'inline-block bg-gray-200 text-gray-800 px-3 py-2 rounded-lg';
+            if (sender === 'user') {
+                bubble.className = 'inline-block bg-emerald-700 text-white px-4 py-2.5 rounded-2xl rounded-tr-sm text-sm max-w-[85%] text-left shadow-sm';
+            } else {
+                bubble.className = 'inline-block bg-white text-gray-800 px-4 py-2.5 rounded-2xl rounded-tl-sm text-sm max-w-[85%] text-left shadow-sm border border-gray-200';
+            }
             bubble.textContent = text;
+
             msgDiv.appendChild(bubble);
             chatHistory.appendChild(msgDiv);
             chatHistory.scrollTop = chatHistory.scrollHeight;
@@ -95,10 +165,14 @@
         async function askBot() {
             const query = userQuery.value.trim();
             if (!query) return;
+
             appendMessage('user', query);
             userQuery.value = '';
+            userQuery.disabled = true;
+            sendBtn.disabled = true;
             loading.classList.remove('hidden');
             errorDiv.classList.add('hidden');
+
             try {
                 const res = await fetch('/api/chat', {
                     method: 'POST',
@@ -107,7 +181,7 @@
                 });
                 const data = await res.json();
                 if (!res.ok) {
-                    throw new Error(data.reply || 'Erreur serveur');
+                    throw new Error(data.reply || 'Une erreur est survenue.');
                 }
                 appendMessage('bot', data.reply);
             } catch (e) {
@@ -115,10 +189,14 @@
                 errorDiv.classList.remove('hidden');
             } finally {
                 loading.classList.add('hidden');
+                userQuery.disabled = false;
+                sendBtn.disabled = false;
+                userQuery.focus();
+                chatHistory.scrollTop = chatHistory.scrollHeight;
             }
         }
 
-        chatForm.addEventListener('submit', e => {
+        chatForm.addEventListener('submit', (e) => {
             e.preventDefault();
             askBot();
         });

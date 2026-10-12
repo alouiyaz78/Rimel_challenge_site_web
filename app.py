@@ -17,20 +17,15 @@ app = Flask(__name__)
 # ==============================================================================
 # 1. RATE LIMITING PAR IP (Flask-Limiter)
 # ==============================================================================
-# Derrière un reverse proxy (Nginx, Render...), ajouter ProxyFix pour obtenir la vraie IP :
-#   from werkzeug.middleware.proxy_fix import ProxyFix
-#   app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
-
 limiter = Limiter(
     key_func=get_remote_address,
     app=app,
-    storage_uri="memory://",  # Mono-processus ; avec plusieurs workers Gunicorn, utiliser redis://
+    storage_uri="memory://",
 )
 
 
 @app.errorhandler(429)
 def trop_de_requetes(e):
-    # Le front lit `data.reply` : on garde le même format JSON
     return jsonify({
         "reply": "Doucement, coureur ! 🏃 Vous avez envoyé beaucoup de questions. "
                  "Merci de patienter une minute avant de réessayer."
@@ -38,7 +33,7 @@ def trop_de_requetes(e):
 
 
 # ==============================================================================
-# 2. FAQ LOCALE (réponses instantanées, sans appel LLM)
+# 2. FAQ LOCALE & REPONSES COMMUNES (zéro coût LLM)
 # ==============================================================================
 
 def _normaliser(texte: str) -> str:
@@ -47,60 +42,38 @@ def _normaliser(texte: str) -> str:
     return re.sub(r"\s+", " ", re.sub(r"[^\w\s]", " ", texte)).strip()
 
 
-def _charger(nom_fichier: str) -> dict:
-    chemin = os.path.join(BASE_DIR, "data", nom_fichier)
-    if os.path.exists(chemin):
-        with open(chemin, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {}
-
-
-_logistique = _charger("logistique.json")
-_lien = os.environ.get("RIMEL_REGLEMENT_URL", "").strip()
-_voir_reglement = f"le règlement officiel : {_lien}" if _lien else "le règlement officiel de la course"
-
-# Clés optionnelles de data/logistique.json : renseignées par l'organisation, jamais inventées
-_horaires = _logistique.get("horaires_depart") or (
-    f"Les horaires officiels des départs 10K et 25K sont publiés dans {_voir_reglement}. "
-    "Prévoyez d'arriver au moins 45 minutes avant le premier départ."
-)
-_dossards = _logistique.get("retrait_dossards") or (
-    f"Les lieux et créneaux de retrait des dossards sont précisés dans {_voir_reglement}. "
-    "Munissez-vous d'une pièce d'identité."
-)
-
-# Chaque entrée : (groupes de mots-clés — un mot de CHAQUE groupe doit apparaître, réponse)
-FAQ = [
-    (
-        [("gobelet", "ecocup")],
-        "Le gobelet réutilisable personnel est OBLIGATOIRE ♻️ Aucun gobelet jetable n'est fourni "
-        "sur les ravitaillements. Les emballages de gels et barres doivent être conservés sur soi, "
-        "sous peine de disqualification.",
+REPONSES_COMMUNES = {
+    ("gobelet", "jetable"): (
+        "Le gobelet réutilisable personnel est OBLIGATOIRE ♻️. "
+        "Aucun gobelet jetable n'est fourni sur les ravitaillements."
     ),
-    (
-        [("urgence", "secours", "pompier", "protection civile", "incendie", "feu", "198")],
-        "🚨 Urgence / feu de forêt : appelez la Protection Civile au 198. Il est formellement "
-        "interdit de fumer, de jeter des mégots ou d'allumer du feu dans la forêt de Rimel.",
+    ("urgence", "198"): (
+        "Protection civile au 198 en cas d'urgence en forêt de Rimel."
     ),
-    (
-        [("heure", "horaire", "quand", "commence"), ("10k", "10 km", "25k", "25 km", "course", "depart")],
-        _horaires,
+    ("horaire", "depart"): (
+        "Ouverture à 06h30. Départ 50 km à 07h00. "
+        "Briefing 10 km et 22 km à 08h15, départ groupé à 08h30. "
+        "Départ Kids (1 km) à 08h45."
     ),
-    (
-        [("dossard",)],
-        _dossards,
+    ("heberg", "hotel"): (
+        "Formule officielle Hébergement + petit-déjeuner à 30 DT (Sportsense.tn) "
+        "ou hôtels sur la corniche de Bizerte."
     ),
-]
-
-
-def _contient(q: str, mot: str) -> bool:
-    return re.search(rf"\b{re.escape(mot)}", q) is not None
+    ("transport", "navette"): (
+        "Navette officielle aller-retour Tunis / Village du Trail à 10 DT."
+    ),
+    ("tarif", "prix"): (
+        "10 km Découverte (15 DT), Mini-Trail 10 km chrono (20 DT), "
+        "Trail 22 km (35 DT, 1 pt ITRA), Ultra-Trail 50 km (100 DT avec maillot, 2 pts ITRA), "
+        "Kids 1 km (10 DT)."
+    ),
+}
 
 
 def reponse_faq(question: str) -> str | None:
     q = _normaliser(question)
-    for groupes, reponse in FAQ:
-        if all(any(_contient(q, mot) for mot in groupe) for groupe in groupes):
+    for keywords, reponse in REPONSES_COMMUNES.items():
+        if any(kw in q for kw in keywords):
             return reponse
     return None
 
@@ -140,7 +113,7 @@ class CacheTTL:
 
 cache_reponses = CacheTTL()
 
-# Limite globale d'appels LLM simultanés, en complément de la limite par IP
+# Limite globale d'appels LLM simultanés
 _slots_llm = threading.BoundedSemaphore(4)
 
 
@@ -164,7 +137,7 @@ def api_chat():
     if len(message) > 500:
         return jsonify({"reply": "Votre question est trop longue (500 caractères maximum)."}), 400
 
-    # 1) FAQ locale : aucun token consommé
+    # 1) FAQ locale instantanée (0 coût LLM)
     faq = reponse_faq(message)
     if faq:
         return jsonify({"reply": faq, "source": "faq"})
@@ -186,7 +159,6 @@ def api_chat():
     finally:
         _slots_llm.release()
 
-    # Les messages de repli (429, erreur) ne sont jamais mis en cache
     if not isinstance(reponse, ReponseIndisponible):
         cache_reponses.set(cle, reponse)
     return jsonify({"reply": reponse, "source": "llm"})
