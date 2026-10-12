@@ -43,30 +43,31 @@ def _normaliser(texte: str) -> str:
 
 
 REPONSES_COMMUNES = {
-    ("gobelet", "jetable"): (
-        "Le gobelet réutilisable personnel est OBLIGATOIRE ♻️. "
-        "Aucun gobelet jetable n'est fourni sur les ravitaillements."
-    ),
-    ("urgence", "198"): (
-        "Protection civile au 198 en cas d'urgence en forêt de Rimel."
-    ),
-    ("horaire", "depart"): (
-        "Ouverture à 06h30. Départ 50 km à 07h00. "
-        "Briefing 10 km et 22 km à 08h15, départ groupé à 08h30. "
-        "Départ Kids (1 km) à 08h45."
-    ),
-    ("heberg", "hotel"): (
-        "Formule officielle Hébergement + petit-déjeuner à 30 DT (Sportsense.tn) "
-        "ou hôtels sur la corniche de Bizerte."
-    ),
-    ("transport", "navette"): (
-        "Navette officielle aller-retour Tunis / Village du Trail à 10 DT."
-    ),
-    ("tarif", "prix"): (
-        "10 km Découverte (15 DT), Mini-Trail 10 km chrono (20 DT), "
-        "Trail 22 km (35 DT, 1 pt ITRA), Ultra-Trail 50 km (100 DT avec maillot, 2 pts ITRA), "
-        "Kids 1 km (10 DT)."
-    ),
+    # Secours, Sécurité & Urgence
+    "ambulance": "Le dispositif médical sur site est assuré par CAP Ambulance (équipements catégorie A et équipe médicale qualifiée). En cas d'urgence en forêt, composez également le 198 (Protection Civile).",
+    "secours": "La sécurité est assurée conjointement par CAP Ambulance (équipements catégorie A sur le terrain) et la Protection Civile (198).",
+    "urgence": "En cas d'urgence sur le parcours ou dans la forêt de Rimel, contactez immédiatement la protection civile au 198 ou adressez-vous aux postes de secours CAP Ambulance.",
+    "198": "Le 198 est le numéro officiel de la protection civile pour toute urgence sur le parcours.",
+
+    # Écologie, Mascotte & Valeurs
+    "gobelet": "Le gobelet réutilisable personnel est OBLIGATOIRE ♻️. Aucun gobelet jetable n'est fourni sur les ravitaillements (démarche Net Zero Trail).",
+    "jetable": "Les gobelets jetables sont strictement interdits dans le cadre du Net Zero Trail. Vous devez apporter votre gobelet réutilisable personnel.",
+    "chardonneret": "Le chardonneret (طير الحسون) est le symbole de cette édition pour sensibiliser à la protection des 74 espèces d'oiseaux menacées en Tunisie et préserver la biodiversité de la forêt de Rimel.",
+    "oiseau": "L'édition met à l'honneur le chardonneret sauvage pour sensibiliser à la lutte contre la capture illégale et préserver les espèces forestières.",
+    "ecologie": "L'événement s'inscrit dans la démarche Net Zero Trail : zéro plastique jetable, reboisement des forêts avec le WWF North Africa et respect strict du milieu naturel.",
+
+    # Courses & Points ITRA
+    "kids": "La course Kids (1 km), baptisée 'Course des Super Héros', est ouverte à tous les enfants (10 DT) pour découvrir le trail en toute sécurité.",
+    "itra": "Points ITRA officiels attribués : 1 point ITRA pour le Trail 22 km et 2 points ITRA pour le grand défi de l'Ultra-Trail 50 km.",
+    "50 km": "L'Ultra-Trail 50 km est le grand défi de l'édition : 100 DT (dossard + t-shirt officiel inclus), accorde 2 points ITRA. Départ à 07h00.",
+    "22 km": "Le Trail 22 km (35 DT) est chronométré avec puce électronique et rapporte 1 point ITRA. Départ à 08h30.",
+    "10 km": "Deux formats 10 km sont proposés : Trail Découverte sans puce (15 DT) et Mini-Trail chronométré avec puce (20 DT). Départ à 08h30.",
+
+    # Logistique, Tarifs & Localisation
+    "menzel": "Le Rimel Challenge est organisé en étroite collaboration avec la municipalité de Menzel Jemil et l'association We Run Rimel.",
+    "heberg": "L'organisation propose une formule officielle Hébergement + petit-déjeuner à 30 DT (réservable sur Sportsense.tn). Des hôtels sont aussi disponibles sur la corniche de Bizerte.",
+    "navette": "Une navette officielle aller-retour Tunis / Village du Trail est disponible à 10 DT lors de l'inscription.",
+    "horaire": "Programme : 06h30 ouverture, 07h00 départ du 50 km, 08h15 briefing, 08h30 départ groupé 10 km et 22 km, 08h45 Course des Super Héros Kids (1 km)."
 }
 
 
