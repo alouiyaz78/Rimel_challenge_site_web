@@ -46,35 +46,39 @@ REPONSES_COMMUNES = {
     # Secours, Sécurité & Urgence
     "ambulance": "Le dispositif médical sur site est assuré par CAP Ambulance (équipements catégorie A et équipe médicale qualifiée). En cas d'urgence en forêt, composez également le 198 (Protection Civile).",
     "secours": "La sécurité est assurée conjointement par CAP Ambulance (équipements catégorie A sur le terrain) et la Protection Civile (198).",
-    "urgence": "En cas d'urgence sur le parcours ou dans la forêt de Rimel, contactez immédiatement la protection civile au 198 ou adressez-vous aux postes de secours CAP Ambulance.",
-    "198": "Le 198 est le numéro officiel de la protection civile pour toute urgence sur le parcours.",
+    "urgence": "En cas d'urgence sur le parcours ou dans la forêt de Rimel, contactez immédiatement la Protection Civile au 198 ou adressez-vous aux postes de secours CAP Ambulance (équipements catégorie A).",
+    "198": "Le 198 est le numéro d'urgence officiel de la Protection Civile en Tunisie.",
 
     # Écologie, Mascotte & Valeurs
-    "gobelet": "Le gobelet réutilisable personnel est OBLIGATOIRE ♻️. Aucun gobelet jetable n'est fourni sur les ravitaillements (démarche Net Zero Trail).",
-    "jetable": "Les gobelets jetables sont strictement interdits dans le cadre du Net Zero Trail. Vous devez apporter votre gobelet réutilisable personnel.",
-    "chardonneret": "Le chardonneret (طير الحسون) est le symbole de cette édition pour sensibiliser à la protection des 74 espèces d'oiseaux menacées en Tunisie et préserver la biodiversité de la forêt de Rimel.",
-    "oiseau": "L'édition met à l'honneur le chardonneret sauvage pour sensibiliser à la lutte contre la capture illégale et préserver les espèces forestières.",
-    "ecologie": "L'événement s'inscrit dans la démarche Net Zero Trail : zéro plastique jetable, reboisement des forêts avec le WWF North Africa et respect strict du milieu naturel.",
+    "chardonneret": "Le chardonneret (طير الحسون) est la mascotte officielle et le symbole de cette édition. Il incarne la liberté et sensibilise à la protection des 74 espèces d'oiseaux menacées en Tunisie ainsi qu'à la préservation de la biodiversité de la forêt de Rimel.",
+    "oiseau": "L'édition met à l'honneur le chardonneret (طير الحسون) pour sensibiliser à la protection des 74 espèces d'oiseaux menacées en Tunisie et lutter contre leur capture illégale.",
+    "ecologie": "L'événement s'inscrit dans la démarche Net Zero Trail : zéro gobelet jetable, préservation de la forêt de Rimel et actions de reboisement en partenariat avec la Direction Générale des Forêts, Ecopact et le WWF North Africa.",
+    "gobelet": "Le gobelet réutilisable personnel est STRICTEMENT OBLIGATOIRE sous peine de disqualification ♻️. Aucun gobelet jetable n'est fourni sur les ravitaillements (démarche Net Zero Trail). Emballages à conserver sur soi.",
+    "jetable": "Les gobelets jetables sont strictement interdits dans le cadre du Net Zero Trail. Vous devez obligatoirement courir avec votre propre gobelet réutilisable.",
+    "natilait": "Natilait est le partenaire titre historique du Rimel Challenge, engagé fidèlement depuis 5 ans aux côtés des coureurs et de la préservation de la nature.",
 
     # Courses & Points ITRA
-    "kids": "La course Kids (1 km), baptisée 'Course des Super Héros', est ouverte à tous les enfants (10 DT) pour découvrir le trail en toute sécurité.",
+    "kids": "La course Kids 1 km, baptisée 'Course des Super Héros', est ouverte à tous les enfants (10 DT) pour découvrir le trail en toute sécurité dans la forêt de Rimel.",
+    "super heros": "La 'Course des Super Héros' est le format Kids de 1 km dédié aux enfants (tarif : 10 DT) pour s'initier aux joies du trail.",
     "itra": "Points ITRA officiels attribués : 1 point ITRA pour le Trail 22 km et 2 points ITRA pour le grand défi de l'Ultra-Trail 50 km.",
-    "50 km": "L'Ultra-Trail 50 km est le grand défi de l'édition : 100 DT (dossard + t-shirt officiel inclus), accorde 2 points ITRA. Départ à 07h00.",
-    "22 km": "Le Trail 22 km (35 DT) est chronométré avec puce électronique et rapporte 1 point ITRA. Départ à 08h30.",
+    "50 km": "L'Ultra-Trail 50 km est le grand défi de l'édition : 100 DT (dossard + t-shirt officiel inclus), attribue 2 points ITRA. Départ à 07h00.",
+    "22 km": "Le Trail 22 km (35 DT) est chronométré avec puce électronique et attribue 1 point ITRA. Départ groupé à 08h30.",
     "10 km": "Deux formats 10 km sont proposés : Trail Découverte sans puce (15 DT) et Mini-Trail chronométré avec puce (20 DT). Départ à 08h30.",
 
     # Logistique, Tarifs & Localisation
-    "menzel": "Le Rimel Challenge est organisé en étroite collaboration avec la municipalité de Menzel Jemil et l'association We Run Rimel.",
-    "heberg": "L'organisation propose une formule officielle Hébergement + petit-déjeuner à 30 DT (réservable sur Sportsense.tn). Des hôtels sont aussi disponibles sur la corniche de Bizerte.",
-    "navette": "Une navette officielle aller-retour Tunis / Village du Trail est disponible à 10 DT lors de l'inscription.",
-    "horaire": "Programme : 06h30 ouverture, 07h00 départ du 50 km, 08h15 briefing, 08h30 départ groupé 10 km et 22 km, 08h45 Course des Super Héros Kids (1 km)."
+    "menzel": "Le Rimel Challenge bénéficie d'un ancrage local fort, organisé avec le soutien précieux de la Municipalité de Menzel Jemil et de l'association We Run Rimel.",
+    "we run rimel": "L'association locale We Run Rimel et la Municipalité de Menzel Jemil collaborent étroitement à l'organisation et au balisage du Rimel Challenge.",
+    "heberg": "L'organisation propose une formule officielle Hébergement + petit-déjeuner à 30 DT (réservable sur Sportsense.tn). Des hôtels sont également disponibles sur la corniche de Bizerte (~10 min).",
+    "navette": "Une navette officielle aller-retour Tunis / Village du Trail est proposée à 10 DT (option sélectionnable lors de l'inscription sur Sportsense.tn).",
+    "horaire": "Horaires officiels : 06h30 ouverture du village, 07h00 départ du 50 km, 08h15 briefing, 08h30 départ groupé 10 km et 22 km, 08h45 départ de la Course des Super Héros Kids (1 km)."
 }
 
 
 def reponse_faq(question: str) -> str | None:
     q = _normaliser(question)
-    for keywords, reponse in REPONSES_COMMUNES.items():
-        if any(kw in q for kw in keywords):
+    for cle, reponse in REPONSES_COMMUNES.items():
+        cle_norm = _normaliser(cle)
+        if cle_norm in q:
             return reponse
     return None
 
