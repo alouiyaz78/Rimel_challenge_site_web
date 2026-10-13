@@ -1,0 +1,828 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "source": "ISPT Tabarka 2007/2008 (Khazri & Chraiet) — plan « MENZEL JEMIL Circuit Culturel » (Diapositive1)",
+    "georeferencement": "Plan calé sur OpenStreetMap (RN8 et avenue Bourguiba) par similitude, écart moyen ~6 m ; positions des stations estimées à ±20 m.",
+    "trace": "Itinéraire piéton sur la voirie OSM entre stations successives",
+    "licence_donnees_osm": "© contributeurs OpenStreetMap, ODbL"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.915619,
+          37.235505
+        ]
+      },
+      "properties": {
+        "id": 0,
+        "nom": "Départ — station de bus",
+        "type": "depart",
+        "station": false,
+        "description": "Point de départ du circuit culturel (station de bus)."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.916269,
+          37.235213
+        ]
+      },
+      "properties": {
+        "id": 1,
+        "nom": "Zaouiet Sidi Jmili",
+        "type": "zaouia",
+        "station": true,
+        "duree_visite": 10,
+        "marche_depuis_precedente_min": 3,
+        "description": "Station 1 du circuit culturel de Menzel Jemil — Aperçu historique (10 min d'explication, 3 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_1.jpg",
+        "photo_disponible": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.916719,
+          37.234255
+        ]
+      },
+      "properties": {
+        "id": 2,
+        "nom": "Mosquée Elhidaya",
+        "type": "mosquee",
+        "station": true,
+        "duree_visite": 15,
+        "marche_depuis_precedente_min": 2,
+        "description": "Station 2 du circuit culturel de Menzel Jemil — Aperçu historique (15 min d'explication, 2 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_2.jpg",
+        "photo_disponible": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.914527,
+          37.233675
+        ]
+      },
+      "properties": {
+        "id": 3,
+        "nom": "Zaouiet Sidi Echemsi",
+        "type": "zaouia",
+        "station": true,
+        "duree_visite": 5,
+        "marche_depuis_precedente_min": 5,
+        "description": "Station 3 du circuit culturel de Menzel Jemil — Aperçu historique (5 min d'explication, 5 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_3.jpg",
+        "photo_disponible": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.914308,
+          37.233485
+        ]
+      },
+      "properties": {
+        "id": 4,
+        "nom": "Hammam Hamidou",
+        "type": "hammam",
+        "station": true,
+        "duree_visite": 20,
+        "marche_depuis_precedente_min": 1,
+        "description": "Station 4 du circuit culturel de Menzel Jemil — Aperçu historique et situation architecturale (20 min d'explication, 1 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_4.jpg",
+        "photo_disponible": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.914574,
+          37.233033
+        ]
+      },
+      "properties": {
+        "id": 5,
+        "nom": "Zaouiet Sidi Ben Issa",
+        "type": "zaouia",
+        "station": true,
+        "duree_visite": 20,
+        "marche_depuis_precedente_min": 3,
+        "description": "Station 5 du circuit culturel de Menzel Jemil — Aperçu historique (20 min d'explication, 3 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_5.jpg",
+        "photo_disponible": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.914153,
+          37.233168
+        ]
+      },
+      "properties": {
+        "id": 6,
+        "nom": "Zaouiet Sidi Bouchhid",
+        "type": "zaouia",
+        "station": true,
+        "duree_visite": 10,
+        "marche_depuis_precedente_min": 3,
+        "description": "Station 6 du circuit culturel de Menzel Jemil — Aperçu historique (10 min d'explication, 3 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_6.jpg",
+        "photo_disponible": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.913619,
+          37.233143
+        ]
+      },
+      "properties": {
+        "id": 7,
+        "nom": "Mosquée Bousaanoun",
+        "type": "mosquee",
+        "station": true,
+        "duree_visite": 20,
+        "marche_depuis_precedente_min": 3,
+        "description": "Station 7 du circuit culturel de Menzel Jemil — Aperçu historique et situation architecturale (20 min d'explication, 3 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_7.jpg",
+        "photo_disponible": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.913061,
+          37.234084
+        ]
+      },
+      "properties": {
+        "id": 8,
+        "nom": "Mosquée Eljebli",
+        "type": "mosquee",
+        "station": true,
+        "duree_visite": 10,
+        "marche_depuis_precedente_min": 15,
+        "description": "Station 8 du circuit culturel de Menzel Jemil — Aperçu historique (10 min d'explication, 15 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_8.jpg",
+        "photo_disponible": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.912179,
+          37.23501
+        ]
+      },
+      "properties": {
+        "id": 9,
+        "nom": "Zaouiet Sidi Othman",
+        "type": "zaouia",
+        "station": true,
+        "duree_visite": 10,
+        "marche_depuis_precedente_min": 10,
+        "description": "Station 9 du circuit culturel de Menzel Jemil — Aperçu historique (10 min d'explication, 10 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_9.jpg",
+        "photo_disponible": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.912434,
+          37.235344
+        ]
+      },
+      "properties": {
+        "id": 10,
+        "nom": "Dheroiya (Edherwaya)",
+        "type": "zaouia",
+        "station": true,
+        "duree_visite": 15,
+        "marche_depuis_precedente_min": 5,
+        "description": "Station 10 du circuit culturel de Menzel Jemil — Aperçu historique (15 min d'explication, 5 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_10.jpg",
+        "photo_disponible": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.913719,
+          37.234642
+        ]
+      },
+      "properties": {
+        "id": 11,
+        "nom": "Dar Hmaied",
+        "type": "maison_traditionnelle",
+        "station": true,
+        "duree_visite": 15,
+        "marche_depuis_precedente_min": 7,
+        "description": "Station 11 du circuit culturel de Menzel Jemil — Architecture (15 min d'explication, 7 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_11.jpg",
+        "photo_disponible": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.914231,
+          37.234957
+        ]
+      },
+      "properties": {
+        "id": 12,
+        "nom": "Zaouiet Sidi Mahjoub",
+        "type": "zaouia",
+        "station": true,
+        "duree_visite": 20,
+        "marche_depuis_precedente_min": 10,
+        "description": "Station 12 du circuit culturel de Menzel Jemil — Aperçu historique (20 min d'explication, 10 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_12.jpg",
+        "photo_disponible": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.914272,
+          37.234302
+        ]
+      },
+      "properties": {
+        "id": 13,
+        "nom": "Mosquée du Souk (Essouk)",
+        "type": "mosquee",
+        "station": true,
+        "duree_visite": 15,
+        "marche_depuis_precedente_min": 7,
+        "description": "Station 13 du circuit culturel de Menzel Jemil — Aperçu historique (15 min d'explication, 7 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_13.jpg",
+        "photo_disponible": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.914577,
+          37.234056
+        ]
+      },
+      "properties": {
+        "id": 14,
+        "nom": "Dar El Gharbi",
+        "type": "maison_traditionnelle",
+        "station": true,
+        "duree_visite": 10,
+        "marche_depuis_precedente_min": 7,
+        "description": "Station 14 du circuit culturel de Menzel Jemil — Architecture (10 min d'explication, 7 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_14.jpg",
+        "photo_disponible": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.91487,
+          37.234497
+        ]
+      },
+      "properties": {
+        "id": 15,
+        "nom": "Mosquée El Aloui",
+        "type": "mosquee",
+        "station": true,
+        "duree_visite": 10,
+        "marche_depuis_precedente_min": 5,
+        "description": "Station 15 du circuit culturel de Menzel Jemil — Aperçu historique (10 min d'explication, 5 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_15.jpg",
+        "photo_disponible": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.91534,
+          37.234872
+        ]
+      },
+      "properties": {
+        "id": 16,
+        "nom": "Sidi Abdelkader",
+        "type": "zaouia",
+        "station": true,
+        "duree_visite": 10,
+        "marche_depuis_precedente_min": 5,
+        "description": "Station 16 du circuit culturel de Menzel Jemil — Aperçu historique (10 min d'explication, 5 min de marche depuis l'étape précédente).",
+        "image": "/static/images/patrimoine/station_16.jpg",
+        "photo_disponible": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            9.915619,
+            37.235505
+          ],
+          [
+            9.9156,
+            37.235456
+          ],
+          [
+            9.91568,
+            37.235369
+          ],
+          [
+            9.91579,
+            37.235229
+          ],
+          [
+            9.915938,
+            37.235062
+          ],
+          [
+            9.916038,
+            37.234942
+          ],
+          [
+            9.916096,
+            37.234891
+          ],
+          [
+            9.916247,
+            37.234941
+          ],
+          [
+            9.916419,
+            37.234988
+          ],
+          [
+            9.916269,
+            37.235213
+          ],
+          [
+            9.916419,
+            37.234988
+          ],
+          [
+            9.916247,
+            37.234941
+          ],
+          [
+            9.916096,
+            37.234891
+          ],
+          [
+            9.916291,
+            37.234685
+          ],
+          [
+            9.916358,
+            37.234617
+          ],
+          [
+            9.916475,
+            37.234505
+          ],
+          [
+            9.916575,
+            37.234391
+          ],
+          [
+            9.916732,
+            37.234182
+          ],
+          [
+            9.916719,
+            37.234255
+          ],
+          [
+            9.916732,
+            37.234182
+          ],
+          [
+            9.916825,
+            37.23406
+          ],
+          [
+            9.916449,
+            37.234006
+          ],
+          [
+            9.916074,
+            37.233933
+          ],
+          [
+            9.915662,
+            37.233855
+          ],
+          [
+            9.915548,
+            37.233837
+          ],
+          [
+            9.915401,
+            37.233805
+          ],
+          [
+            9.915243,
+            37.233764
+          ],
+          [
+            9.915065,
+            37.233699
+          ],
+          [
+            9.914875,
+            37.233623
+          ],
+          [
+            9.914745,
+            37.233585
+          ],
+          [
+            9.914552,
+            37.233545
+          ],
+          [
+            9.914527,
+            37.233675
+          ],
+          [
+            9.914552,
+            37.233545
+          ],
+          [
+            9.914308,
+            37.23348
+          ],
+          [
+            9.914308,
+            37.233485
+          ],
+          [
+            9.914308,
+            37.23348
+          ],
+          [
+            9.914106,
+            37.233392
+          ],
+          [
+            9.914336,
+            37.233129
+          ],
+          [
+            9.914379,
+            37.233086
+          ],
+          [
+            9.914397,
+            37.233061
+          ],
+          [
+            9.914574,
+            37.233033
+          ],
+          [
+            9.914397,
+            37.233061
+          ],
+          [
+            9.914379,
+            37.233086
+          ],
+          [
+            9.914336,
+            37.233129
+          ],
+          [
+            9.914153,
+            37.233168
+          ],
+          [
+            9.914336,
+            37.233129
+          ],
+          [
+            9.914106,
+            37.233392
+          ],
+          [
+            9.913592,
+            37.23309
+          ],
+          [
+            9.913619,
+            37.233143
+          ],
+          [
+            9.913592,
+            37.23309
+          ],
+          [
+            9.914106,
+            37.233392
+          ],
+          [
+            9.914308,
+            37.23348
+          ],
+          [
+            9.914227,
+            37.23372
+          ],
+          [
+            9.914215,
+            37.233788
+          ],
+          [
+            9.914207,
+            37.233833
+          ],
+          [
+            9.914228,
+            37.233952
+          ],
+          [
+            9.914221,
+            37.234002
+          ],
+          [
+            9.914171,
+            37.234148
+          ],
+          [
+            9.914183,
+            37.234207
+          ],
+          [
+            9.913874,
+            37.234198
+          ],
+          [
+            9.91367,
+            37.234197
+          ],
+          [
+            9.913506,
+            37.234191
+          ],
+          [
+            9.913335,
+            37.234178
+          ],
+          [
+            9.913082,
+            37.234136
+          ],
+          [
+            9.913061,
+            37.234084
+          ],
+          [
+            9.913082,
+            37.234136
+          ],
+          [
+            9.913335,
+            37.234178
+          ],
+          [
+            9.913208,
+            37.234412
+          ],
+          [
+            9.913136,
+            37.234518
+          ],
+          [
+            9.912938,
+            37.234828
+          ],
+          [
+            9.9129,
+            37.234862
+          ],
+          [
+            9.912821,
+            37.234865
+          ],
+          [
+            9.912659,
+            37.234843
+          ],
+          [
+            9.912491,
+            37.23482
+          ],
+          [
+            9.912412,
+            37.234873
+          ],
+          [
+            9.912361,
+            37.23496
+          ],
+          [
+            9.912315,
+            37.235078
+          ],
+          [
+            9.912179,
+            37.23501
+          ],
+          [
+            9.912315,
+            37.235078
+          ],
+          [
+            9.912291,
+            37.235165
+          ],
+          [
+            9.912294,
+            37.235262
+          ],
+          [
+            9.912291,
+            37.235323
+          ],
+          [
+            9.912434,
+            37.235344
+          ],
+          [
+            9.913719,
+            37.234642
+          ],
+          [
+            9.913716,
+            37.234665
+          ],
+          [
+            9.914107,
+            37.234747
+          ],
+          [
+            9.914137,
+            37.234755
+          ],
+          [
+            9.914085,
+            37.235037
+          ],
+          [
+            9.914231,
+            37.234957
+          ],
+          [
+            9.914085,
+            37.235037
+          ],
+          [
+            9.914137,
+            37.234755
+          ],
+          [
+            9.914107,
+            37.234747
+          ],
+          [
+            9.914133,
+            37.234475
+          ],
+          [
+            9.914183,
+            37.234207
+          ],
+          [
+            9.914333,
+            37.234228
+          ],
+          [
+            9.914272,
+            37.234302
+          ],
+          [
+            9.914333,
+            37.234228
+          ],
+          [
+            9.914471,
+            37.234267
+          ],
+          [
+            9.914577,
+            37.234056
+          ],
+          [
+            9.914471,
+            37.234267
+          ],
+          [
+            9.914664,
+            37.234337
+          ],
+          [
+            9.91492,
+            37.234441
+          ],
+          [
+            9.91487,
+            37.234497
+          ],
+          [
+            9.91492,
+            37.234441
+          ],
+          [
+            9.915263,
+            37.234594
+          ],
+          [
+            9.915604,
+            37.234734
+          ],
+          [
+            9.91534,
+            37.234872
+          ]
+        ]
+      },
+      "properties": {
+        "id": "trace",
+        "nom": "Circuit culturel de Menzel Jemil",
+        "type": "trace",
+        "ordre": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "longueur_m": 1944,
+        "duree_explications_min": 215,
+        "duree_marche_min": 91,
+        "fin": "Pause au café de Chammeli (monument historique, emplacement non reporté sur le plan)"
+      }
+    }
+  ]
+}

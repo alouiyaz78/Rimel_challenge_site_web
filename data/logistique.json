@@ -1,0 +1,14 @@
+{
+  "horaires_depart": "06h30 ouverture officielle. Départ 50 km à 07h00. Briefing à 08h15 puis départ 10 km et 22 km à 08h30. Départ Trail Kids (1 km) à 08h45.",
+  "programme_ceremonies": "Remise des prix : Kids à 10h30, 10 km à 11h00, 22 km à 11h30, 50 km à 12h30. Clôture de l'événement à 15h30.",
+  "hebergement": "Option officielle proposée par l'organisation : Hébergement + petit-déjeuner à 30 DT (réservable à l'inscription). Des hôtels et maisons d'hôtes sont également disponibles sur la corniche de Bizerte et à Menzel Jemil.",
+  "transport": "Navette officielle aller-retour Tunis / Village du Trail à 10 DT (option à cocher lors de l'inscription).",
+  "parking": "Parking balisé gratuit à l'entrée de la forêt de Rimel.",
+  "tarifs_inscriptions": {
+    "trail_kids_1km": "10 DT",
+    "trail_decouverte_10km": "15 DT (sans puce)",
+    "mini_trail_10km": "20 DT (avec puce)",
+    "trail_22km": "35 DT (avec puce, 1 point ITRA)",
+    "ultra_trail_50km": "100 DT (avec puce, t-shirt inclus, 2 points ITRA)"
+  }
+}
