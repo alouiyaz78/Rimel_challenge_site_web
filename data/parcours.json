@@ -1,0 +1,41 @@
+{
+  "epreuves": [
+    {
+      "nom": "Ultra-Trail 50 km",
+      "distance": "50 km",
+      "depart": "07h00",
+      "points_itra": 2,
+      "dotation": "Dossard et maillot officiel inclus",
+      "tarif": "100 DT"
+    },
+    {
+      "nom": "Trail 22 km",
+      "distance": "22 km",
+      "depart": "08h30",
+      "points_itra": 1,
+      "chronometrage": "Puce électronique",
+      "tarif": "35 DT"
+    },
+    {
+      "nom": "Mini-Trail 10 km",
+      "distance": "10 km",
+      "depart": "08h30",
+      "chronometrage": "Puce électronique",
+      "tarif": "20 DT"
+    },
+    {
+      "nom": "Trail Découverte 10 km",
+      "distance": "10 km",
+      "depart": "08h30",
+      "chronometrage": "Sans puce",
+      "tarif": "15 DT"
+    },
+    {
+      "nom": "Trail Kids",
+      "distance": "1 km",
+      "depart": "08h45",
+      "tarif": "10 DT"
+    }
+  ],
+  "ravitaillements": "Points d'eau et ravitaillements en forêt et à l'arrivée. Gobelet réutilisable personnel strictement obligatoire (aucun gobelet jetable fourni)."
+}

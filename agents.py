@@ -9,6 +9,8 @@ from ddgs import DDGS
 from openai import RateLimitError
 import wikipedia
 
+import rag_service
+
 # ==============================================================================
 # 0. ENVIRONNEMENT & CONFIGURATION INITIALE
 # ==============================================================================
@@ -57,6 +59,20 @@ def chercher_wikipedia(sujet: str) -> str:
         return "Aucune entrée Wikipédia exacte trouvée sur ce terme."
 
 
+def consulter_archives_remel(question: str) -> str:
+    """Consulte les archives documentaires officielles du Remel (base vectorielle locale) :
+    histoire de la fixation des dunes et de la forêt (décret de 1904), flore, faune,
+    lac de Bizerte, bilan carbone du trail (« Vers l'Équilibre Vert ») et patrimoine
+    culturel de Menzel Jemil. À utiliser en priorité pour toute question historique,
+    environnementale ou patrimoniale.
+    """
+    try:
+        return rag_service.rechercher_contexte(question, n_results=3)
+    except Exception:
+        logger.exception("Erreur RAG consulter_archives_remel")
+        return "Archives du Remel momentanément indisponibles."
+
+
 OUTILS_DISPONIBLES = [chercher_web, chercher_wikipedia]
 
 
@@ -75,6 +91,45 @@ DOC_PARCOURS = charger_base("parcours.json")
 DOC_LOGISTIQUE = charger_base("logistique.json")
 DOC_HISTOIRE = charger_base("histoire.json")
 DOC_ENVIRONNEMENT = charger_base("environnement.json")
+
+# Statistiques officielles : source unique pour /api/stats (app.py) et pour les agents.
+STATISTIQUES = {
+    "direct": {"inscrits_actuels": 450, "places_restantes": 150},
+    "historique": [
+        {"annee": 2022, "edition": "1ère", "participants": 210, "finishers_pct": 94},
+        {"annee": 2023, "edition": "2ème", "participants": 340, "finishers_pct": 92},
+        {"annee": 2024, "edition": "3ème", "participants": 480, "finishers_pct": 91},
+        {"annee": 2025, "edition": "4ème", "participants": 620, "finishers_pct": 93},
+    ],
+    "impact_vert": {"arbres_plantes": 1200, "dechets_recoltes_kg": 450},
+}
+
+
+def _nombre(n: int) -> str:
+    return f"{n:,}".replace(",", " ")
+
+
+def construire_contexte_stats(stats: dict) -> str:
+    direct = stats["direct"]
+    jauge = direct["inscrits_actuels"] + direct["places_restantes"]
+    remplissage = round(100 * direct["inscrits_actuels"] / jauge) if jauge else 0
+    historique = "\n".join(
+        f"  * {h['edition']} édition ({h['annee']}) : {_nombre(h['participants'])} participants "
+        f"({h['finishers_pct']} % de finishers)"
+        for h in stats["historique"]
+    )
+    vert = stats["impact_vert"]
+    return f"""
+Données et indicateurs officiels de participation :
+- Édition en cours : {_nombre(direct['inscrits_actuels'])} inscrits enregistrés sur une jauge maximale de {_nombre(jauge)} places (taux de remplissage : {remplissage} %).
+- Historique de progression :
+{historique}
+- Bilan éco-responsable (partenariat WWF North Africa / DGF) : plus de {_nombre(vert['arbres_plantes'])} arbres replantés et {_nombre(vert['dechets_recoltes_kg'])} kg de déchets collectés.
+"""
+
+
+# Contexte statistique officiel partagé
+CONTEXTE_STATS = construire_contexte_stats(STATISTIQUES)
 
 
 # ==============================================================================
@@ -127,6 +182,7 @@ Tu dispenses également des conseils techniques spécifiques sur le terrain du R
 
 DOCUMENTATION OFFICIELLE :
 {DOC_PARCOURS}
+{CONTEXTE_STATS}
 {REGLE_DE_PRIORITE}
 Sois encourageant, sportif, précis et concis.""",
     config=groq_config,
@@ -146,6 +202,7 @@ Tes missions et connaissances indispensables :
 DOCUMENTATION OFFICIELLE :
 {DOC_PARCOURS}
 {DOC_ENVIRONNEMENT}
+{CONTEXTE_STATS}
 {REGLE_DE_PRIORITE}
 Sois ferme, rigoureux, prévenant et concis.""",
     config=groq_config,
@@ -169,6 +226,7 @@ Tu renseignes les participants sur les aspects pratiques de l'organisation :
 
 DOCUMENTATION OFFICIELLE :
 {DOC_LOGISTIQUE}
+{CONTEXTE_STATS}
 {REGLE_DE_PRIORITE}
 Donne des indications logistiques claires, pratiques et vérifiables.""",
     config=groq_config,
@@ -188,10 +246,12 @@ Tu portes l'esprit, l'engagement et l'histoire de l'événement :
 DOCUMENTATION OFFICIELLE :
 {DOC_ENVIRONNEMENT}
 {DOC_HISTOIRE}
+{CONTEXTE_STATS}
 {REGLE_DE_PRIORITE}
+ARCHIVES DU REMEL : pour toute question historique, environnementale ou patrimoniale (fixation des dunes, flore, faune, lac de Bizerte, bilan carbone, Menzel Jemil), appelle D'ABORD l'outil `consulter_archives_remel` et appuie ta réponse sur les extraits retournés, avant tout recours à `chercher_web` ou `chercher_wikipedia`.
 Adopte un ton engagé, inspirant, pédagogique et protecteur de la nature.""",
     config=groq_config,
-    tools=OUTILS_DISPONIBLES,
+    tools=[consulter_archives_remel, *OUTILS_DISPONIBLES],
 )
 
 
@@ -272,7 +332,13 @@ def traiter_question_visiteur(question: str) -> str:
     elif any(k in q for k in [
         "chardonneret", "oiseau", "natilait", "net zero", "zero dechet", "zéro déchet",
         "reboisement", "wwf", "ecopact", "foret", "forêt", "dechet", "déchet", "feu",
-        "histoire", "edition", "édition", "valeur", "mascotte", "palmares", "palmarès"
+        "histoire", "edition", "édition", "valeur", "mascotte", "palmares", "palmarès",
+        "statisti", "chiffre", "inscrit", "participant", "finisher", "remplissage",
+        "places restantes", "arbre", "patrimoine", "culture", "monument", "mosquee", "mosquée",
+        "zaouia", "zaouiet", "hammam", "dune", "fixation", "1904", "faune", "flore", "biodiversit",
+        "espece", "espèce", "saccharum", "acacia", "eucalyptus", "genevrier", "genévrier",
+        "flamant", "lac de bizerte", "lagune", "moule", "huitre", "huître", "carbone", "co2",
+        "equilibre vert", "équilibre vert"
     ]):
         cible = ambassadeur_agent
 

@@ -6,11 +6,11 @@ import time
 import unicodedata
 from collections import OrderedDict
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
-from agents import BASE_DIR, ReponseIndisponible, message_surcharge, traiter_question_visiteur
+from agents import BASE_DIR, STATISTIQUES, ReponseIndisponible, message_surcharge, traiter_question_visiteur
 
 app = Flask(__name__)
 
@@ -129,6 +129,19 @@ _slots_llm = threading.BoundedSemaphore(4)
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+@app.route("/api/stats", methods=["GET"])
+def api_stats():
+    return jsonify(STATISTIQUES)
+
+
+@app.route("/data/geojson/<path:nom_fichier>")
+def geojson(nom_fichier):
+    # Seul le dossier data/geojson est exposé (la base vectorielle et les JSON des agents restent privés).
+    return send_from_directory(
+        os.path.join(BASE_DIR, "data", "geojson"), nom_fichier, mimetype="application/geo+json"
+    )
 
 
 @app.route("/api/chat", methods=["POST"])
