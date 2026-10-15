@@ -65,9 +65,9 @@ REPONSES_COMMUNES = {
     "198": "Le 198 est le numéro d'urgence officiel de la Protection Civile en Tunisie.",
 
     # Écologie, Mascotte & Valeurs
-    "chardonneret": "Le chardonneret (طير الحسون) est la mascotte officielle et le symbole de cette édition. Il incarne la liberté et sensibilise à la protection des 74 espèces d'oiseaux menacées en Tunisie ainsi qu'à la préservation de la biodiversité de la forêt de Rimel.",
-    "oiseau": "L'édition met à l'honneur le chardonneret (طير الحسون) pour sensibiliser à la protection des 74 espèces d'oiseaux menacées en Tunisie et lutter contre leur capture illégale.",
-    "ecologie": "L'événement s'inscrit dans la démarche Net Zero Trail : zéro gobelet jetable, préservation de la forêt de Rimel et actions de reboisement en partenariat avec la Direction Générale des Forêts, Ecopact et le WWF North Africa.",
+    "chardonneret": "Le chardonneret (طير الحسون) est le symbole de l'édition 2026 — c'est l'oiseau du visuel. Il sensibilise contre sa capture et sa vente illégale en cage : en Tunisie, 74 espèces d'oiseaux sur 180 sont menacées.",
+    "oiseau": "L'oiseau du visuel est le chardonneret (طير الحسون), symbole de l'édition 2026 : il sensibilise contre sa capture et sa vente illégale en cage. En Tunisie, 74 espèces d'oiseaux sur 180 sont menacées.",
+    "ecologie": "Initiative Net Zero Trail 2026 🌳 : le 12 avril 2026, 3 000 arbres plantés sur 2 hectares en forêt de Nadhour (avec Ecopact, la DGF et Natilait) ; le 1er août 2026, prévention des incendies avec le WWF North Africa et la DGF. Sur la course : zéro gobelet jetable, gobelet réutilisable obligatoire.",
     "gobelet": "Le gobelet réutilisable personnel est STRICTEMENT OBLIGATOIRE sous peine de disqualification ♻️. Aucun gobelet jetable n'est fourni sur les ravitaillements (démarche Net Zero Trail). Emballages à conserver sur soi.",
     "jetable": "Les gobelets jetables sont strictement interdits dans le cadre du Net Zero Trail. Vous devez obligatoirement courir avec votre propre gobelet réutilisable.",
     "natilait": "Natilait est le partenaire titre historique du Rimel Challenge, engagé fidèlement depuis 5 ans aux côtés des coureurs et de la préservation de la nature.",
@@ -83,7 +83,7 @@ REPONSES_COMMUNES = {
     # Logistique, Tarifs & Localisation
     "we run rimel": "L'association locale We Run Rimel et la Municipalité de Menzel Jemil collaborent étroitement à l'organisation et au balisage du Rimel Challenge.",
     "heberg": "L'organisation propose une formule officielle Hébergement + petit-déjeuner à 30 DT (réservable sur Sportsense.tn). Des hôtels sont également disponibles sur la corniche de Bizerte (~10 min).",
-    "navette": "Une navette officielle aller-retour Tunis / Village du Trail est proposée à 10 DT (option sélectionnable lors de l'inscription sur Sportsense.tn).",
+    "navette": "🚌 Navette depuis Tunis (Bizerta Top Travel) pour le 10 km, le 22 km et les accompagnateurs : 200 places assises uniquement, réservation obligatoire (option à cocher lors de l'inscription sur Sportsense, 10 DT). Aller : départ à 06h00 devant le Ministère du Tourisme (Avenue Habib Bourguiba, Tunis). Retour : départ à 13h00 depuis la forêt de Rimel. Coureurs du 50 km : un microbus dédié est spécifiquement prévu pour les coureurs du 50 km (horaires adaptés au départ matinal et aux arrivées tardives, ajusté en fonction des réservations).",
     "horaire": "Horaires officiels du Jour J : 05h30 ouverture de la table d'accueil au Village de Rimel (derniers paiements et dossards), 07h00 départ du 50 km, 08h15 briefing, 08h30 départ groupé 10 km et 22 km, 08h45 départ de la Course des Super Héros Kids (1 km), 16h30 cérémonie de remise des prix, 18h00 clôture du village.",
 
 
@@ -116,8 +116,20 @@ DEPART_NUANCE = (
 )
 # Réponses testées AVANT les mots-clés généraux (sinon « dossard pour le 22 km » tomberait sur la fiche tarif du 22 km).
 REPONSES_PRIORITAIRES = {
-    "dossard": "Retrait du dossard après paiement : soit en amont auprès des bureaux / points relais partenaires référencés dans l'application Sportsense, soit le Jour J à la table d'accueil du Village de Rimel dès 05h30. Munissez-vous d'une pièce d'identité et de la décharge médicale / du certificat médical.",
-    "preinscri": "La préinscription en ligne sur Sportsense ne suffit pas ⚠️ : votre dossier reste en attente tant que le paiement n'est pas effectué. Validez-le auprès d'un bureau / point relais partenaire référencé dans l'application, ou le Jour J à la table d'accueil du Village de Rimel dès 05h30 (pièce d'identité + décharge médicale / certificat).",
+    # Jauge : testée avant « dossard » (« combien de dossards ? » porte sur le plafond, pas sur le retrait)
+    "combien de dossards": "La limite maximale est strictement fixée à 3 500 participants au total, toutes courses confondues 🎽. Les inscriptions seront closes dès que ce plafond sera atteint : le nombre d'inscrits en direct est affiché en haut du site.",
+    "combien de places": "La limite maximale est strictement fixée à 3 500 participants au total, toutes courses confondues 🎽. Les inscriptions seront closes dès que ce plafond sera atteint : le nombre d'inscrits en direct est affiché en haut du site.",
+    "combien de participants": "La limite maximale est strictement fixée à 3 500 participants au total, toutes courses confondues 🎽. Les inscriptions seront closes dès que ce plafond sera atteint : le nombre d'inscrits en direct est affiché en haut du site.",
+    "nombre de participants": "La limite maximale est strictement fixée à 3 500 participants au total, toutes courses confondues 🎽. Les inscriptions seront closes dès que ce plafond sera atteint : le nombre d'inscrits en direct est affiché en haut du site.",
+    "nombre maximum": "La limite maximale est strictement fixée à 3 500 participants au total, toutes courses confondues 🎽. Les inscriptions seront closes dès que ce plafond sera atteint : le nombre d'inscrits en direct est affiché en haut du site.",
+    "une limite": "La limite maximale est strictement fixée à 3 500 participants au total, toutes courses confondues 🎽. Les inscriptions seront closes dès que ce plafond sera atteint : le nombre d'inscrits en direct est affiché en haut du site.",
+    "jauge": "La limite maximale est strictement fixée à 3 500 participants au total, toutes courses confondues 🎽. Les inscriptions seront closes dès que ce plafond sera atteint : le nombre d'inscrits en direct est affiché en haut du site.",
+    "quota": "La limite maximale est strictement fixée à 3 500 participants au total, toutes courses confondues 🎽. Les inscriptions seront closes dès que ce plafond sera atteint : le nombre d'inscrits en direct est affiché en haut du site.",
+    "navette": REPONSES_COMMUNES["navette"],
+    "microbus": REPONSES_COMMUNES["navette"],
+    "depuis tunis": REPONSES_COMMUNES["navette"],
+    "dossard": "Retrait des dossards du 26 octobre au 3 novembre (ou jusqu'à épuisement des stocks), de 10h00 à 19h00, dans l'un des 5 points officiels : Peak Tunis City (Géant), Peak Azur City, Peak La Soukra, Foire de Bizerte, Bureau We Run Rimel (Menzel Jemil). Derniers retraits possibles le Jour J à la table d'accueil du Village de Rimel dès 05h30. Munissez-vous d'une pièce d'identité et de la décharge médicale / du certificat médical.",
+    "preinscri": "La préinscription en ligne sur Sportsense ne suffit pas ⚠️ : votre dossier reste en attente tant que le paiement n'est pas effectué. Validez-le du 26 octobre au 3 novembre (10h00–19h00) dans l'un des 5 points de retrait (Peak Tunis City (Géant), Peak Azur City, Peak La Soukra, Foire de Bizerte, Bureau We Run Rimel (Menzel Jemil)), ou le Jour J à la table d'accueil du Village de Rimel dès 05h30 (pièce d'identité + décharge médicale / certificat).",
 }
 MOTS_COURSE = re.compile(r"\b(km|trail|course|courses|kids|ultra|mini|semi|coureurs?)\b")
 QUESTION_DE_LIEU = re.compile(r"\b(ou|lieu|adresse|trouve|localis|rendez vous)")

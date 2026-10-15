@@ -95,6 +95,7 @@ DOC_PARCOURS = charger_base("parcours.json")
 DOC_LOGISTIQUE = charger_base("logistique.json")
 DOC_HISTOIRE = charger_base("histoire.json")
 DOC_ENVIRONNEMENT = charger_base("environnement.json")
+DOC_ENGAGEMENT_ECO = charger_base("engagement_ecologique.json")
 
 # Statistiques officielles : source unique pour /api/stats (app.py) et pour les agents.
 STATISTIQUES = {
@@ -273,11 +274,13 @@ Tu renseignes les participants sur les aspects pratiques de l'organisation :
 - INSCRIPTION EN DEUX ÉTAPES (point à expliquer clairement, sans ambiguïté) :
   1. Préinscription en ligne obligatoire sur Sportsense (Sportsense.tn) : le dossier reste EN ATTENTE DE PAIEMENT.
   2. Validation définitive + retrait du dossard après paiement, au choix :
-     * en amont de la course, auprès des bureaux / points relais partenaires référencés dans l'application Sportsense ;
+     * en amont de la course, du 26 octobre au 3 novembre (ou jusqu'à épuisement des stocks), de 10h00 à 19h00, dans l'un des 5 points de retrait officiels : Peak Tunis City (Géant), Peak Azur City, Peak La Soukra, Foire de Bizerte, Bureau We Run Rimel (Menzel Jemil) ;
      * le Jour J, à la table d'accueil / stand d'organisation du Village départ en forêt de Rimel, dès 05h30.
   La préinscription en ligne NE SUFFIT PAS à garantir la participation : l'inscription n'est validée qu'une fois le paiement effectué.
   Documents à présenter : pièce d'identité et décharge médicale / certificat médical.
-  Ne cite aucun nom ni adresse de bureau partenaire : renvoie à la liste référencée dans l'application Sportsense.
+  Pour « Où / quand retirer mon dossard ? » : donne la période (26 octobre – 3 novembre), les horaires (10h00–19h00) et énumère précisément les 5 points de retrait, sans en ajouter ni inventer d'adresse.
+
+- JAUGE : la limite maximale est strictement fixée à 3 500 participants au total (toutes courses confondues) ; les inscriptions sont closes dès que ce plafond est atteint. Pour « Combien de places / de participants / de dossards ? » ou « Y a-t-il une limite ? », donne ce plafond explicitement (ne donne pas de nombre d'inscrits en cours : il est affiché en direct sur le site).
 
 - DEUX LIEUX DE DÉPART À NE PAS CONFONDRE :
   * Courses de trail (50 km, 22 km, 10 km Mini-Trail et Découverte, Kids) : Village départ en pleine forêt de Rimel, sur l'esplanade d'animation près du Centre des stages et des vacances de Rimel (مركز التربصات والإصطياف والتخييم بالرمال).
@@ -293,7 +296,8 @@ Tu renseignes les participants sur les aspects pratiques de l'organisation :
   * 16h30 : Cérémonie officielle de remise des prix sur l'esplanade en forêt
   * 18h00 : Clôture du village
 - Dossards & puces : les épreuves chronométrées (Mini-Trail 10 km, Trail 22 km, Ultra-Trail 50 km) sont équipées d'une puce électronique ; le Trail Découverte 10 km est sans puce.
-- Transports & Navette : Navette officielle aller-retour Tunis / Village du Trail à 10 DT (option réservable sur Sportsense.tn). Accès rapide via l'autoroute A4.
+- Transport depuis Tunis : (1) navette standard Bizerta Top Travel pour les coureurs du 10 km, du 22 km et les accompagnateurs — 200 places assises uniquement, réservation obligatoire (option à cocher à l'inscription sur Sportsense, 10 DT) ; ALLER : départ à 06h00 devant le Ministère du Tourisme (Avenue Habib Bourguiba, Tunis) ; RETOUR : départ à 13h00 depuis la forêt de Rimel. (2) Ultra-Trail 50 km : Un microbus dédié est spécifiquement prévu pour les coureurs du 50 km (horaires adaptés au départ matinal et aux arrivées tardives, ajusté en fonction des réservations). Pour « Comment venir depuis Tunis ? » ou « Y a-t-il un bus / une navette ? », donne ces informations exactes ; à un coureur du 50 km, confirme le microbus dédié (n'invente pas ses horaires précis). Accès en voiture : autoroute A4.
+- Inscription en ligne : https://sportsense.tn/evenement/rimel-challenge-by-natilait/
 - Hébergement : Formule officielle Hébergement + petit-déjeuner à 30 DT (option Sportsense.tn). Hôtels et hébergements partenaires sur la corniche de Bizerte (à environ 10 minutes du site).
 - Ancrage local : Événement organisé avec le soutien et l'étroite collaboration de la Municipalité de Menzel Jemil et de l'association locale We Run Rimel.
 
@@ -318,12 +322,13 @@ ambassadeur_agent = Agent(
     prompt=f"""Tu es l'Ambassadeur Patrimoine, Écologie & Valeurs du Rimel Challenge.
 PÉRIMÈTRE : histoire et patrimoine de Menzel Jemil et du Remel (archives documentées), circuit culturel, faune, flore, écologie, partenaires, statistiques des éditions. Hors périmètre : entraînement, inscriptions. Gastronomie et plats : les archives n'en décrivent aucun ; réponds exactement « Nos documents officiels et archives historiques ne contiennent pas d'informations sur les plats ou la gastronomie de Menzel Jemil. », puis propose au besoin les ravitaillements du village en forêt de Rimel ou, de manière générique, les cafés et commerces du centre-ville de Menzel Jemil (sans aucun nom ni plat).
 Tu portes l'esprit, l'engagement et l'histoire de l'événement :
-- Démarche "Net Zero Trail" & Reboisement : Préservation active de la forêt et des dunes de Rimel, zéro plastique jetable, projets concrets de reboisement et de conservation menés en synergie avec la Direction Générale des Forêts (DGF), l'association Ecopact et le WWF North Africa.
-- Mascotte officielle : Le chardonneret sauvage (طير الحسون), emblème de liberté choisi pour sensibiliser à la protection des 74 espèces d'oiseaux menacées en Tunisie et lutter contre le braconnage.
+- Symbole de l'édition 2026 (et oiseau du visuel) : le chardonneret (طير الحسون), pour sensibiliser contre sa capture et sa vente illégale en cage ; en Tunisie, 74 espèces d'oiseaux sur 180 sont menacées.
+- Initiative « Net Zero Trail » 2026 : 12 avril 2026, reboisement de 3 000 arbres sur 2 hectares en forêt de Nadhour (avec Ecopact, la DGF et Natilait) ; 1er août 2026, prévention des incendies avec le WWF North Africa et la DGF. Cite ces faits exactement (dates, chiffres, lieux, partenaires), sans en ajouter.
 - Partenaire titre historique : Natilait, engagé depuis 5 ans comme partenaire de confiance auprès du Rimel Challenge.
 - Histoire et esprit du trail : Respect de la nature, convivialité, valorisation du patrimoine de Menzel Jemil et de Bizerte.
 
 DOCUMENTATION OFFICIELLE :
+{DOC_ENGAGEMENT_ECO}
 {DOC_ENVIRONNEMENT}
 {DOC_HISTOIRE}
 {CONTEXTE_STATS}
@@ -450,7 +455,8 @@ MOTS_CLES = {
     ],
     "logistique": [
         "dossard", "puce", "retrait", "retirer", "chronometrage", "inscri", "paie", "payer",
-        "point relais", "bureau", "certificat", "decharge", "piece d identite", "papiers", "depart", "ou est",
+        "point relais", "bureau", "peak", "foire", "certificat", "jauge", "quota", "combien de places",
+        "combien de participants", "combien de dossards", "limite", "plafond", "microbus", "decharge", "piece d identite", "papiers", "depart", "ou est",
         "navette", "bus", "transport",
         "hotel", "dormir", "heberg", "parking", "garer", "acces", "venir", "horaire", "quelle heure",
         "programme", "briefing", "remise des prix", "ceremonie", "sportsense", "village",
@@ -460,7 +466,8 @@ MOTS_CLES = {
         "hammam", "dar ", "medina", "menzel jemil", "histoire", "patrimoine", "culture", "tradition",
         "1904", "fixation", "dune", "chardonneret", "oiseau", "faune", "flore", "biodiversit", "espece",
         "saccharum", "acacia", "eucalyptus", "flamant", "lac de bizerte", "lagune", "moule", "huitre",
-        "carbone", "co2", "equilibre vert", "reboisement", "wwf", "ecopact", "natilait", "net zero",
+        "carbone", "co2", "equilibre vert", "reboisement", "wwf", "ecopact", "natilait", "net zero", "nadhour",
+        "visuel", "logo", "symbole", "ecolog", "environnement", "incendie de foret",
         "dechet", "mascotte", "valeur", "edition", "palmares", "statisti", "chiffre", "participant",
         "finisher", "remplissage", "places restantes", "arbre", "plat", "cuisine", "gastronom", "specialite",
         "restaurant", "manger local",
