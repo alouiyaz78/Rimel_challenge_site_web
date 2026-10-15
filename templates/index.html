@@ -989,6 +989,31 @@
             sessionStorage.setItem(CLE_MESSAGES, JSON.stringify(messages.slice(-40)));
         }
 
+        // Liens Markdown [texte](url) des réponses du bot, construits élément par élément (aucun innerHTML).
+        // Seuls les fichiers du site et la page d'inscription Sportsense deviennent cliquables.
+        const LIEN_MARKDOWN = /\[([^\]\n]{1,80})\]\(\s*([^)\s]{1,200})\s*\)/g;  // tolère « ( /chemin ) »
+        const lienAutorise = url => url.startsWith('/static/') || url.startsWith('https://sportsense.tn/');
+        function remplirAvecLiens(bulle, texte) {
+            let curseur = 0;
+            for (const m of texte.matchAll(LIEN_MARKDOWN)) {
+                const [brut, libelle, url] = m;
+                bulle.append(texte.slice(curseur, m.index));
+                if (lienAutorise(url)) {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.textContent = libelle;
+                    a.className = 'font-semibold text-emerald-700 underline decoration-emerald-300 underline-offset-2 hover:text-emerald-900';
+                    if (url.endsWith('.gpx')) a.setAttribute('download', '');
+                    else { a.target = '_blank'; a.rel = 'noopener'; }
+                    bulle.append(a);
+                } else {
+                    bulle.append(libelle);  // lien non autorisé : texte seul
+                }
+                curseur = m.index + brut.length;
+            }
+            bulle.append(texte.slice(curseur));
+        }
+
         function ajouterMessage(auteur, texte, erreur = false, memoriser = true) {
             const ligne = document.createElement('div');
             ligne.className = 'chat-message ' + (auteur === 'user' ? 'flex justify-end' : 'flex');
@@ -999,7 +1024,8 @@
                     : erreur
                         ? 'bg-rose-50 text-rose-700 ring-1 ring-rose-200 rounded-tl-sm'
                         : 'bg-white text-slate-800 ring-1 ring-slate-200 rounded-tl-sm');
-            bulle.textContent = texte;
+            if (auteur === 'user') bulle.textContent = texte;
+            else remplirAvecLiens(bulle, texte);
             ligne.appendChild(bulle);
             chatHistorique.appendChild(ligne);
             if (memoriser) memoriserMessage(auteur, texte, erreur);

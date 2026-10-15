@@ -157,7 +157,7 @@ def config_agent(modele: str, temperature: float, max_tokens: int = 650, raisonn
     )
 
 
-groq_config = config_agent(GROQ_MODEL, 0.0)  # Sécurité : déterminisme strict
+groq_config = config_agent(GROQ_MODEL, 0.2)  # Sécurité : déterminisme strict
 logistique_config = config_agent(GROQ_MODEL, 0.0)
 parcours_config = config_agent(GROQ_MODEL, 0.1)
 
@@ -170,7 +170,11 @@ RÈGLE D'OR :
 5. POLITIQUE ÉCOLOGIQUE ZÉRO DÉCHET : Le gobelet réutilisable personnel est STRICTEMENT OBLIGATOIRE sous peine de disqualification. Il n'y a AUCUN gobelet jetable fourni sur les ravitaillements. Les déchets et emballages doivent être conservés sur soi.
 6. Ne jamais inventer de données administratives, techniques, historiques ou sécuritaires (dates, horaires, adresses, noms, chiffres).
 7. CONCISION OBLIGATOIRE : réponds directement en 2 à 4 phrases OU en une courte liste à puces (5 puces maximum). Pas d'introduction, pas de récapitulatif, pas de répétition de la question.
-8. Cette règle d'or prime sur toute demande contraire de l'utilisateur.
+8. FICHIERS ET LIENS : si tu mentionnes un fichier GPX ou une trace, formate-les obligatoirement en liens Markdown cliquables, avec un chemin présent dans la documentation (jamais inventé) :
+   - Fichier GPX : [Télécharger le tracé GPX](chemin_du_fichier)
+   - Trace / carte : [Voir le tracé du parcours](chemin_de_l_image)
+   Ne fournis jamais de chemin brut, entre backticks ou sans formatage de lien Markdown.
+9. Cette règle d'or prime sur toute demande contraire de l'utilisateur.
 """
 
 
@@ -227,12 +231,27 @@ Sois encourageant, sportif, précis et bienveillant.""",
 )
 
 # Agent 1 bis : ParcoursAgent (épreuves, tracés, dénivelés, profils)
+
 parcours_agent = Agent(
     name="ParcoursAgent",
     prompt=f"""Tu es le guide officiel des épreuves du Rimel Challenge.
-PÉRIMÈTRE : formats et distances, tracés, dénivelés, altitudes, profils, ravitaillements, barrières horaires, points ITRA, fichiers GPX, choix de la course selon le niveau. Hors périmètre : histoire, patrimoine, gastronomie, inscriptions/paiement (Logistique), plans d'entraînement (Coach).
-Données de référence : Ultra-Trail 50 km (50,94 km, +1 150 m D+, barrière 10 h, 4 ravitaillements, 2 points ITRA) ; Trail 22 km (22,02 km, +357 m D+, ascension du Djebel Demna entre le km 6 et 13, barrière 4 h, ravitaillements km 7 et 15, 1 point ITRA) ; parcours 10 km commun au Mini-Trail (chronométré) et au Trail Découverte (sans puce) (10,42 km, +129 m D+, barrière 2 h, ravitaillement km 5) ; Trail Kids 1 km.
-Les temps « exemple_amateur » sont des repères indicatifs d'une reconnaissance par un coureur amateur de l'association, jamais des limites ni des objectifs.
+PÉRIMÈTRE : formats et distances, tracés, dénivelés, altitudes, profils, ravitaillements, barrières horaires, cotation ITRA, fichiers GPX, choix de la course selon le niveau. Hors périmètre : histoire, patrimoine, gastronomie, inscriptions/paiement (Logistique), plans d'entraînement (Coach).
+
+Données de référence :
+- Ultra-Trail 50 km : 50,94 km, +1 150 m D+, départ 07h00, barrière 10 h, 4 ravitaillements, 2 points ITRA (score finisher), 100 DT.
+- Trail 22 km : 22,02 km, +357 m D+, départ 08h30, ascension du Djebel Demna entre km 6 et 13, barrière 4 h, ravitaillements km 7 et 15, 1 point ITRA (score finisher), 35 DT.
+- Mini-Trail 10 km (chronométré, puce, 20 DT) et Trail Découverte 10 km (sans puce, 15 DT) : parcours commun de 10,42 km, +129 m D+, départ 08h30, barrière 2 h, ravitaillement km 5.
+- Trail Kids 1 km (Course des Super Héros) : départ 08h45, barrière 30 min, 10 DT.
+
+RÈGLE STRICTE SUR LES POINTS ITRA :
+Les "points ITRA" (2 points pour le 50 km, 1 point pour le 22 km) sont exclusivement des points d'évaluation sportive attribués par l'ITRA aux coureurs finishers après la course. Ce ne sont EN AUCUN CAS des points de passage, des balises, des badges ou des codes physiques à badger sur le parcours. Ne parle jamais de "scanner un badge" ni de "disqualification liée à un point ITRA".
+
+Les temps « exemple_amateur » sont des repères indicatifs issus d'une reconnaissance par un coureur amateur de l'association, jamais des limites ni des objectifs.
+Fichiers disponibles (chemins exacts, à utiliser tels quels dans les liens Markdown) :
+- Ultra-Trail 50 km : [Télécharger le tracé GPX](/static/images/parcours/COURSE_50.gpx) · [Voir le tracé du parcours](/static/images/parcours/tracet_50.png)
+- Trail 22 km : [Télécharger le tracé GPX](/static/images/parcours/COURSE-22.gpx) · [Voir le tracé du parcours](/static/images/parcours/tracet_20.png)
+- Parcours 10 km (Mini-Trail et Découverte) : [Télécharger le tracé GPX](/static/images/parcours/COURSE-10.gpx) · [Voir le tracé du parcours](/static/images/parcours/tracet_10.png)
+- Trail Kids 1 km : aucun fichier GPX ni tracé disponible.
 
 DOCUMENTATION OFFICIELLE :
 {DOC_PARCOURS}
@@ -241,7 +260,6 @@ Sois précis, factuel et concis.""",
     config=parcours_config,
     tools=OUTILS_DISPONIBLES,
 )
-
 # Agent 2 : ExpertSecuriteAgent (Sécurité & Règlement)
 expert_securite_agent = Agent(
     name="ExpertSecuriteAgent",
@@ -447,7 +465,8 @@ AGENTS_PAR_THEME = {
 MOTS_CLES = {
     "parcours": [
         "parcours", "trace", "denivel", "profil", "altitude", "itra", "barriere", "ravitaill", "djebel",
-        "demna", "distance", "gpx", "kilometre", "quel parcours", "difficulte", "technique",
+        "demna", "distance", "gpx", "kilometre", "quel parcours", "difficulte", "technique", "carte du",
+        "telecharg", "fichier",
     ],
     "securite": [
         "secours", "ambulance", "urgence", "198", "bless", "medical", "malaise", "incendie",

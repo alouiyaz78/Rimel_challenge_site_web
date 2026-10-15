@@ -28,6 +28,7 @@
         "calories": 4200
       },
       "fichier_gpx": "/static/images/parcours/COURSE_50.gpx",
+      "carte_trace": "/static/images/parcours/tracet_50.png",
       "image_trace": "/static/images/parcours/trace_50.svg"
     },
     {
@@ -51,6 +52,7 @@
         "calories": 1870
       },
       "fichier_gpx": "/static/images/parcours/COURSE-22.gpx",
+      "carte_trace": "/static/images/parcours/tracet_20.png",
       "image_trace": "/static/images/parcours/trace_22.svg"
     },
     {
@@ -74,6 +76,7 @@
         "calories": 900
       },
       "fichier_gpx": "/static/images/parcours/COURSE-10.gpx",
+      "carte_trace": "/static/images/parcours/tracet_10.png",
       "image_trace": "/static/images/parcours/trace_10.svg"
     }
   ],
