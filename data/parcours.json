@@ -3,7 +3,10 @@
     {
       "id": "trail-50k",
       "nom": "L'Ultra Trail du Remel",
-      "distance_km": 50.94,
+      "distance_officielle_km": 50,
+      "distance_km": 50,
+      "distance_gpx_reconnue_km": 50.94,
+      "remarque_distance": "Format officiel 50 km. La distance de 50,94 km correspond au relevé GPX de reconnaissance terrain, donnée à titre indicatif en raison des légères variations GPS sous le couvert forestier.",
       "denivele_positif_m": 1150,
       "altitude_min_max": [
         4,
@@ -34,7 +37,10 @@
     {
       "id": "trail-22k",
       "nom": "Le Semi-Trail des Crêtes & Forêt",
-      "distance_km": 22.02,
+      "distance_officielle_km": 22,
+      "distance_km": 22,
+      "distance_gpx_reconnue_km": 22.02,
+      "remarque_distance": "Format officiel 22 km. La distance de 22,02 km est issue de la trace GPS de reconnaissance amateur (valeur indicative).",
       "denivele_positif_m": 357,
       "altitude_min_max": [
         4,
@@ -58,7 +64,10 @@
     {
       "id": "trail-10k",
       "nom": "Le Trail Découverte du Remel",
-      "distance_km": 10.42,
+      "distance_officielle_km": 10,
+      "distance_km": 10,
+      "distance_gpx_reconnue_km": 10.42,
+      "remarque_distance": "Format officiel 10 km. La trace GPS enregistre 10,42 km à titre indicatif.",
       "denivele_positif_m": 129,
       "altitude_min_max": [
         4,
@@ -87,7 +96,7 @@
       "parcours": "trail-50k",
       "depart": "07h00",
       "points_itra": 2,
-      "dotation": "Dossard et maillot officiel inclus",
+      "dotation": "Dossard, puce électronique et maillot technique officiel inclus",
       "tarif": "100 DT"
     },
     {
@@ -96,6 +105,7 @@
       "depart": "08h30",
       "points_itra": 1,
       "chronometrage": "Puce électronique",
+      "dotation": "Dossard avec puce et ravitaillements (aucun maillot inclus)",
       "tarif": "35 DT"
     },
     {
@@ -103,6 +113,7 @@
       "parcours": "trail-10k",
       "depart": "08h30",
       "chronometrage": "Puce électronique",
+      "dotation": "Dossard avec puce et ravitaillement (aucun maillot inclus)",
       "tarif": "20 DT"
     },
     {
@@ -110,12 +121,14 @@
       "parcours": "trail-10k",
       "depart": "08h30",
       "chronometrage": "Sans puce",
+      "dotation": "Dossard sans puce et ravitaillement (aucun maillot inclus)",
       "tarif": "15 DT"
     },
     {
       "nom": "Trail Kids (Course des Super Héros)",
       "distance": "1 km",
       "depart": "08h45",
+      "dotation": "Dossard et médaille finisher (aucun maillot inclus)",
       "tarif": "10 DT"
     }
   ],
