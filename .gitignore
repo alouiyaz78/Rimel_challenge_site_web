@@ -3,6 +3,11 @@
 data/vector_db/
 __pycache__/
 *.pyc
-data/vector_db/
-docs/knowledge/*.pdf
-docs/knowledge/*.pptx
+data/stats_instantane.json
+cloudflared
+
+# Sources sous droit d'auteur (non publiées)
+data/rag/*
+!data/rag/.gitkeep
+docs/knowledge/
+*.pdf

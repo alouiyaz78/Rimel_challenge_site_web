@@ -1,6 +1,26 @@
 {
-  "horaires_depart": "06h30 ouverture officielle. Départ 50 km à 07h00. Briefing à 08h15 puis départ 10 km et 22 km à 08h30. Départ Trail Kids (1 km) à 08h45.",
-  "programme_ceremonies": "Remise des prix : Kids à 10h30, 10 km à 11h00, 22 km à 11h30, 50 km à 12h30. Clôture de l'événement à 15h30.",
+  "inscription_et_paiement": {
+    "principe": "La préinscription en ligne ne suffit pas à garantir la participation : l'inscription n'est définitivement validée qu'une fois le paiement effectué.",
+    "etape_1_preinscription": "Préinscription en ligne obligatoire sur la plateforme Sportsense (Sportsense.tn). Le dossier reste en attente de paiement.",
+    "etape_2_validation_et_dossard": {
+      "en_amont_de_la_course": "Auprès des bureaux / points relais partenaires référencés dans l'application Sportsense : validation du paiement et remise du dossard.",
+      "le_jour_j": "Au Village départ en forêt de Rimel (près du Centre des stages et des vacances de Rimel), à la table d'accueil / stand d'organisation dès 05h30 : finalisation des paiements en attente et retrait des derniers dossards avant les départs."
+    },
+    "documents_necessaires": ["Pièce d'identité", "Décharge médicale / certificat médical"]
+  },
+  "lieux_de_depart": {
+    "courses_de_trail": "Toutes les courses (Ultra-Trail 50 km, Trail 22 km, Mini-Trail 10 km, Trail Découverte 10 km, Trail Kids) partent du Village départ en pleine forêt de Rimel, sur l'esplanade d'animation située près du Centre des stages et des vacances de Rimel (مركز التربصات والإصطياف والتخييم بالرمال).",
+    "circuit_culturel": "Le circuit culturel (visite pédestre urbaine des 16 stations du patrimoine) part de la station de bus au centre-ville de Menzel Jemil. Ce n'est pas le même lieu que le départ des courses."
+  },
+  "horaires_jour_j": [
+    {"heure": "05h30", "evenement": "Ouverture de la table d'accueil au Village de Rimel (derniers paiements et retraits de dossards)"},
+    {"heure": "07h00", "evenement": "Départ de l'Ultra-Trail 50 km (barrière horaire 10 h : derniers arrivants attendus vers 17h00)"},
+    {"heure": "08h15", "evenement": "Briefing d'avant-course"},
+    {"heure": "08h30", "evenement": "Départ groupé du Trail 22 km et des 10 km (Mini-Trail et Découverte)"},
+    {"heure": "08h45", "evenement": "Départ du Trail Kids 1 km (Course des Super Héros)"},
+    {"heure": "16h30", "evenement": "Cérémonie officielle de remise des prix sur l'esplanade en forêt"},
+    {"heure": "18h00", "evenement": "Clôture du village"}
+  ],
   "hebergement": "Option officielle proposée par l'organisation : Hébergement + petit-déjeuner à 30 DT (réservable à l'inscription). Des hôtels et maisons d'hôtes sont également disponibles sur la corniche de Bizerte et à Menzel Jemil.",
   "transport": "Navette officielle aller-retour Tunis / Village du Trail à 10 DT (option à cocher lors de l'inscription).",
   "parking": "Parking balisé gratuit à l'entrée de la forêt de Rimel.",
