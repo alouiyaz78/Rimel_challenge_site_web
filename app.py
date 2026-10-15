@@ -231,6 +231,21 @@ historiques = HistoriqueSessions()
 SESSION_ID_VALIDE = re.compile(r"^[A-Za-z0-9-]{8,64}$")
 
 
+def _historique_client(payload: dict) -> list[dict]:
+    """Historique envoyé par le navigateur (6 derniers messages), nettoyé.
+
+    Il n'est utilisé qu'en secours, si le serveur a perdu la session (redémarrage) : un
+    historique fourni par le client peut être falsifié, la copie serveur fait donc foi."""
+    brut = payload.get("history", [])
+    if not isinstance(brut, list):
+        return []
+    propre = []
+    for m in brut[-6:]:
+        if isinstance(m, dict) and m.get("role") in ("user", "assistant") and isinstance(m.get("content"), str):
+            propre.append({"role": m["role"], "content": m["content"].strip()[:800]})
+    return propre
+
+
 def _session_id(payload: dict) -> str:
     sid = str(payload.get("session_id", ""))
     return sid if SESSION_ID_VALIDE.match(sid) else str(uuid.uuid4())
@@ -274,7 +289,7 @@ def api_chat():
     if len(message) > 500:
         return jsonify({"reply": "Votre question est trop longue (500 caractères maximum).", "session_id": session_id}), 400
 
-    historique = historiques.lire(session_id)
+    historique = historiques.lire(session_id) or _historique_client(payload)
 
     def repondre(texte: str, source: str, theme: str | None = None):
         historiques.ajouter(

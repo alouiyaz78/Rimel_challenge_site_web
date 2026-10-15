@@ -971,6 +971,18 @@
         function lireMessages() {
             try { return JSON.parse(sessionStorage.getItem(CLE_MESSAGES)) || []; } catch { return []; }
         }
+        // Mémoire glissante envoyée au serveur : 3 derniers tours (6 messages), hors messages d'erreur
+        // et d'accueil. Le serveur garde sa propre copie et ne l'utilise qu'en secours.
+        let chatHistory = JSON.parse(sessionStorage.getItem('rimelChatHistory') || '[]');
+        function memoriserTour(role, content) {
+            chatHistory = [...chatHistory, { role, content }].slice(-6);
+            sessionStorage.setItem('rimelChatHistory', JSON.stringify(chatHistory));
+        }
+        function viderHistorique() {
+            chatHistory = [];
+            sessionStorage.removeItem('rimelChatHistory');
+        }
+
         function memoriserMessage(auteur, texte, erreur) {
             const messages = lireMessages();
             messages.push({ auteur, texte, erreur });
@@ -1008,6 +1020,7 @@
             sessionStorage.removeItem(CLE_MESSAGES);
             sessionStorage.removeItem('rimelChatTheme');
             themeSuggere = null;
+            viderHistorique();
             chatHistorique.querySelectorAll('.chat-message').forEach(el => el.remove());
             chatSaisie.value = '';
             chatSaisie.focus();
@@ -1039,7 +1052,7 @@
                 const res = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: question, session_id: sessionId, theme: themeSuggere })
+                    body: JSON.stringify({ message: question, session_id: sessionId, theme: themeSuggere, history: chatHistory })
                 });
                 const data = await res.json().catch(() => ({}));
                 if (data.session_id && data.session_id !== sessionId) {
@@ -1048,6 +1061,10 @@
                 }
                 frappe.remove();
                 ajouterMessage('bot', data.reply || 'Une erreur est survenue. Merci de réessayer.', !res.ok);
+                if (res.ok && data.reply) {
+                    memoriserTour('user', question);
+                    memoriserTour('assistant', data.reply);
+                }
             } catch {
                 frappe.remove();
                 ajouterMessage('bot', 'Erreur de connexion au serveur. Vérifiez votre connexion et réessayez.', true);
@@ -1070,6 +1087,14 @@
 
         chatSuggestions.querySelectorAll('.chat-theme').forEach(btn =>
             btn.addEventListener('click', () => {
+                if (btn.dataset.theme !== themeSuggere) {
+                    // Nouveau thème : contexte remis à zéro pour éviter les interférences entre sujets
+                    viderHistorique();
+                    fetch('/api/chat/reset', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ session_id: sessionId })
+                    }).catch(() => {});
+                }
                 themeSuggere = btn.dataset.theme;
                 sessionStorage.setItem('rimelChatTheme', themeSuggere);
                 ajouterMessage('bot', ACCUEILS[themeSuggere]);
