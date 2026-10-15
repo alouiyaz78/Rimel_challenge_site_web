@@ -1,0 +1,29 @@
+{
+  "symbole_edition": {
+    "nom": "Le chardonneret (طير الحسون)",
+    "message": "Sensibilisation contre la capture et la vente illégale du chardonneret en cage.",
+    "chiffre_cle": "74 espèces d'oiseaux sur 180 sont menacées en Tunisie."
+  },
+  "net_zero_trail_2026": {
+    "principe": "Initiative « Net Zero Trail » de l'édition 2026 : réduire et compenser l'impact de l'événement.",
+    "actions": [
+      {
+        "date": "12 avril 2026",
+        "action": "Reboisement de 3 000 arbres sur 2 hectares en forêt de Nadhour",
+        "partenaires": [
+          "Ecopact",
+          "Direction Générale des Forêts (DGF)",
+          "Natilait"
+        ]
+      },
+      {
+        "date": "1er août 2026",
+        "action": "Action de prévention des incendies de forêt",
+        "partenaires": [
+          "WWF North Africa",
+          "Direction Générale des Forêts (DGF)"
+        ]
+      }
+    ]
+  }
+}
