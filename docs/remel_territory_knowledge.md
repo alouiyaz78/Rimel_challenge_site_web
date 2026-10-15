@@ -105,3 +105,14 @@ Le circuit culturel complet (16 stations) demande environ 5 heures : 3 h 35 d'ex
 
 ### Le circuit nature Remel – lac de Bizerte
 Un circuit nature complète la visite : la forêt du Remel, légèrement aménagée avec des sentiers qui canalisent les visiteurs et évitent le piétinement, puis le lac de Bizerte, accessible à pied ou en transport public, pour l'observation des oiseaux et des sorties en barque avec les pêcheurs. La forêt reçoit en moyenne 56 000 visiteurs par an, dont 73 % viennent de la région de Bizerte.
+
+## Fiche 6 — Engagement écologique 2026 : le chardonneret et le Net Zero Trail
+tag: engagement_ecologique_2026
+sources: Organisation du Rimel Challenge (édition 2026)
+
+### Le chardonneret, symbole de l'édition
+Le chardonneret (طير الحسون) est le symbole de l'édition 2026 du Rimel Challenge, d'où l'oiseau présent sur le visuel. Il sert à sensibiliser contre la capture et la vente illégale du chardonneret en cage. En Tunisie, 74 espèces d'oiseaux sur 180 sont menacées.
+
+### L'initiative Net Zero Trail 2026
+L'initiative « Net Zero Trail » vise à réduire et compenser l'impact de l'événement. Le 12 avril 2026, 3 000 arbres ont été plantés sur 2 hectares en forêt de Nadhour, avec Ecopact, la Direction Générale des Forêts (DGF) et Natilait. Le 1er août 2026, une action de prévention des incendies de forêt est menée avec le WWF North Africa et la DGF.
+
