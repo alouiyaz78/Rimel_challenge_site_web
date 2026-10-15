@@ -100,5 +100,8 @@ Un circuit culturel à pied de 16 stations part de la station de bus (3 min de m
 ### Le circuit culturel : stations 9 à 16
 Le circuit se poursuit par : 9. Zaouiet Sidi Othman ; 10. Dheroiya ; 11. Dar Hmaied (architecture) ; 12. Zaouiet Sidi Mahjoub ; 13. Mosquée du Souk ; 14. Dar El Gharbi (architecture) ; 15. Mosquée El Aloui ; 16. Sidi Abdelkader. Il se termine par une pause au café de Chammeli, lui-même monument historique. Chaque station comprend 5 à 20 minutes d'explication.
 
+### Durée et longueur du circuit culturel
+Le circuit culturel complet (16 stations) demande environ 5 heures : 3 h 35 d'explications cumulées aux stations et environ 1 h 30 de marche entre les étapes (de 1 à 15 minutes selon les tronçons), pour environ 1,9 km de parcours à pied dans la ville. Il faut ajouter la pause finale au café de Chammeli. On peut aussi n'en faire qu'une partie, par exemple les stations 1 à 8 autour de la station de bus.
+
 ### Le circuit nature Remel – lac de Bizerte
 Un circuit nature complète la visite : la forêt du Remel, légèrement aménagée avec des sentiers qui canalisent les visiteurs et évitent le piétinement, puis le lac de Bizerte, accessible à pied ou en transport public, pour l'observation des oiseaux et des sorties en barque avec les pêcheurs. La forêt reçoit en moyenne 56 000 visiteurs par an, dont 73 % viennent de la région de Bizerte.

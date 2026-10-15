@@ -1,8 +1,87 @@
 {
+  "parcours": [
+    {
+      "id": "trail-50k",
+      "nom": "L'Ultra Trail du Remel",
+      "distance_km": 50.94,
+      "denivele_positif_m": 1150,
+      "altitude_min_max": [
+        4,
+        231
+      ],
+      "profil": "Parcours exigeant reliant Menzel Jemil, la forêt du Remel, les crêtes et El Alia. Sable côtier, pistes forestières et montées techniques.",
+      "ravitaillements": "4 points",
+      "barriere_horaire": "10h00",
+      "materiel_obligatoire": [
+        "Réserve d'eau de 1,5 L minimum (poche à eau ou deux flasques de 750 ml)"
+      ],
+      "materiel_conseille": [
+        "Torche frontale",
+        "Sac d'hydratation",
+        "Fichier GPX du parcours"
+      ],
+      "exemple_amateur": {
+        "temps": "8h17",
+        "allure": "9:46/km",
+        "fc_moyenne": 130,
+        "hydratation_estimee": "~4.5L",
+        "calories": 4200
+      },
+      "fichier_gpx": "/static/images/parcours/COURSE_50.gpx",
+      "image_trace": "/static/images/parcours/trace_50.svg"
+    },
+    {
+      "id": "trail-22k",
+      "nom": "Le Semi-Trail des Crêtes & Forêt",
+      "distance_km": 22.02,
+      "denivele_positif_m": 357,
+      "altitude_min_max": [
+        4,
+        231
+      ],
+      "profil": "Profil intermédiaire avec ascension progressive du Djebel Demna (sommet 231 m) entre le km 6 et 13, descente technique puis retour roulant sous les pins.",
+      "ravitaillements": "2 points (km 7 et km 15)",
+      "barriere_horaire": "4h00",
+      "exemple_amateur": {
+        "temps": "3h08",
+        "allure": "8:33/km",
+        "cadence_spm": 126,
+        "fc_moyenne": 138,
+        "hydratation_estimee": "~3.1L",
+        "calories": 1870
+      },
+      "fichier_gpx": "/static/images/parcours/COURSE-22.gpx",
+      "image_trace": "/static/images/parcours/trace_22.svg"
+    },
+    {
+      "id": "trail-10k",
+      "nom": "Le Trail Découverte du Remel",
+      "distance_km": 10.42,
+      "denivele_positif_m": 129,
+      "altitude_min_max": [
+        4,
+        50
+      ],
+      "profil": "Parcours découverte rapide et accessible, sous-bois d'acacias et pins, passages souples en sable dunaire sans montée cassante.",
+      "ravitaillements": "1 point (km 5)",
+      "barriere_horaire": "2h00",
+      "exemple_amateur": {
+        "temps": "1h32",
+        "allure": "8:54/km",
+        "cadence_spm": 121,
+        "fc_moyenne": 130,
+        "hydratation_estimee": "~1.0L",
+        "calories": 900
+      },
+      "fichier_gpx": "/static/images/parcours/COURSE-10.gpx",
+      "image_trace": "/static/images/parcours/trace_10.svg"
+    }
+  ],
+  "note_exemple_amateur": "Les relevés « exemple_amateur » proviennent d'une reconnaissance réelle par un coureur amateur de niveau moyen de l'association : ce sont des repères pédagogiques, pas des limites ni des objectifs.",
   "epreuves": [
     {
       "nom": "Ultra-Trail 50 km",
-      "distance": "50 km",
+      "parcours": "trail-50k",
       "depart": "07h00",
       "points_itra": 2,
       "dotation": "Dossard et maillot officiel inclus",
@@ -10,7 +89,7 @@
     },
     {
       "nom": "Trail 22 km",
-      "distance": "22 km",
+      "parcours": "trail-22k",
       "depart": "08h30",
       "points_itra": 1,
       "chronometrage": "Puce électronique",
@@ -18,20 +97,20 @@
     },
     {
       "nom": "Mini-Trail 10 km",
-      "distance": "10 km",
+      "parcours": "trail-10k",
       "depart": "08h30",
       "chronometrage": "Puce électronique",
       "tarif": "20 DT"
     },
     {
       "nom": "Trail Découverte 10 km",
-      "distance": "10 km",
+      "parcours": "trail-10k",
       "depart": "08h30",
       "chronometrage": "Sans puce",
       "tarif": "15 DT"
     },
     {
-      "nom": "Trail Kids",
+      "nom": "Trail Kids (Course des Super Héros)",
       "distance": "1 km",
       "depart": "08h45",
       "tarif": "10 DT"

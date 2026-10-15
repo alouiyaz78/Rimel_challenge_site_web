@@ -27,6 +27,37 @@
         .point-frappe:nth-child(2) { animation-delay: .15s; }
         .point-frappe:nth-child(3) { animation-delay: .3s; }
 
+        /* Cartes des courses : tracé entier (contain) sur un fond flouté de la même capture,
+           sous un voile ardoise qui passe au vert foncé quand la course est sélectionnée. */
+        @property --voile { syntax: '<color>'; inherits: true; initial-value: rgba(15, 23, 42, .6); }
+        .carte-course {
+            --voile: rgba(15, 23, 42, .6);
+            position: relative; overflow: hidden; isolation: isolate; cursor: pointer;
+            background-color: #0f172a;
+            transition: transform .2s, box-shadow .2s, --voile .3s;
+        }
+        .carte-course::after {
+            content: ""; position: absolute; inset: -24px; z-index: -2;
+            background: var(--fond) center / cover no-repeat;
+            filter: blur(14px) saturate(.8) brightness(.7);
+        }
+        .carte-course::before {
+            content: ""; position: absolute; inset: 0; z-index: -1;
+            background: linear-gradient(var(--voile), var(--voile)), var(--fond) center / contain no-repeat;
+        }
+        .carte-course:hover { transform: translateY(-3px); --voile: rgba(15, 23, 42, .45); }
+        .carte-course.selectionnee { --voile: rgba(6, 78, 59, .75); box-shadow: 0 0 0 2px #34d399, 0 20px 40px -12px rgba(6, 78, 59, .7); }
+        .carte-course:focus-visible { outline: 3px solid #34d399; outline-offset: 3px; }
+
+        /* Compteurs live : flash vert discret quand une valeur augmente */
+        .compteur { display: inline-block; font-variant-numeric: tabular-nums; }
+        @keyframes flash-vert {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.18); color: #34d399; text-shadow: 0 0 12px rgba(52, 211, 153, .6); }
+            100% { transform: scale(1); }
+        }
+        .compteur-flash { animation: flash-vert .9s ease-out; }
+
         /* Carte du circuit culturel (Leaflet, thème sombre) */
         .marqueur-station {
             width: 30px; height: 30px; border-radius: 9999px;
@@ -52,9 +83,31 @@
 <body class="bg-slate-50 text-slate-800 font-sans antialiased">
 
     <!-- ===================================================================== -->
+    <!-- BANDEAU INSCRIPTIONS LIVE                                             -->
+    <!-- ===================================================================== -->
+    <div id="bandeauLive" class="fixed top-0 inset-x-0 z-50 h-9 bg-slate-950 text-slate-200 text-xs border-b border-emerald-500/30">
+        <div class="max-w-7xl mx-auto h-full px-4 sm:px-6 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3 sm:gap-5 min-w-0 overflow-hidden whitespace-nowrap">
+                <span class="flex items-center gap-2 font-semibold text-emerald-300">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    Inscriptions Live
+                </span>
+                <span><b class="compteur text-white" data-live="total">—</b> inscrits</span>
+                <span class="hidden sm:inline"><b class="compteur text-emerald-300" data-live="valides">—</b> validés</span>
+                <span class="hidden md:inline"><b class="compteur text-amber-300" data-live="preinscrits">—</b> préinscrits</span>
+                <span class="hidden md:inline"><b class="compteur text-white" data-live="nb_pays">—</b> pays</span>
+            </div>
+            <a href="#parcours" class="shrink-0 font-semibold text-emerald-300 hover:text-emerald-200 transition">Je m'inscris →</a>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
     <!-- HEADER                                                                -->
     <!-- ===================================================================== -->
-    <header id="entete" class="fixed top-0 inset-x-0 z-40 transition-colors duration-300 bg-slate-900/70 backdrop-blur border-b border-white/10">
+    <header id="entete" class="fixed top-9 inset-x-0 z-40 transition-colors duration-300 bg-slate-900/70 backdrop-blur border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
             <a href="#accueil" class="flex items-center gap-2 text-white">
                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="" class="h-9 w-9 rounded-full object-cover bg-emerald-600"
@@ -96,7 +149,7 @@
     <!-- ===================================================================== -->
     <section id="accueil" class="relative min-h-[92vh] flex items-center overflow-hidden photo-fond bg-slate-900"
              style="background-image: linear-gradient(115deg, rgba(2,6,23,.92) 0%, rgba(6,78,59,.75) 55%, rgba(2,6,23,.55) 100%), url('{{ url_for('static', filename='images/banniere.jpg') }}');">
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 pt-28 pb-20 w-full">
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 pt-36 pb-20 w-full">
             <div class="max-w-3xl">
                 <div class="flex flex-wrap gap-2 mb-6">
                     <span class="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full backdrop-blur">
@@ -125,7 +178,7 @@
                     <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     <div>
                         <p class="text-white font-bold">Édition 2026 · Date officielle à venir</p>
-                        <p class="text-xs text-slate-300">Ouverture du village 06h30 · Départ Ultra 07h00 · Forêt de Rimel, Bizerte</p>
+                        <p class="text-xs text-slate-300">Accueil & dossards dès 05h30 · Départ Ultra 07h00 · Village de Rimel (forêt), Menzel Jemil</p>
                     </div>
                 </div>
 
@@ -148,7 +201,7 @@
     <!-- ===================================================================== -->
     <!-- AMBASSADEUR TERRITOIRE                                                -->
     <!-- ===================================================================== -->
-    <section id="territoire" class="py-24 scroll-mt-16">
+    <section id="territoire" class="py-24 scroll-mt-28">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="max-w-2xl">
                 <p class="text-emerald-700 font-semibold text-sm uppercase tracking-widest">Ambassadeur du territoire</p>
@@ -236,7 +289,7 @@
     <!-- ===================================================================== -->
     <!-- PARCOURS                                                              -->
     <!-- ===================================================================== -->
-    <section id="parcours" class="py-24 bg-slate-900 text-white scroll-mt-16">
+    <section id="parcours" class="py-24 bg-slate-900 text-white scroll-mt-28">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="max-w-2xl">
                 <p class="text-emerald-400 font-semibold text-sm uppercase tracking-widest">Les parcours</p>
@@ -245,18 +298,23 @@
             </div>
 
             <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
-                <div class="rounded-2xl bg-gradient-to-b from-emerald-500 to-emerald-700 p-6 ring-1 ring-emerald-300/30 lg:col-span-1">
-                    <p class="text-xs font-bold uppercase tracking-wider text-emerald-100">Grand défi</p>
+                <div class="carte-course flex flex-col rounded-2xl p-6 ring-1 ring-white/10" role="button" tabindex="0" aria-pressed="false" style="--fond: url('{{ url_for('static', filename='images/parcours/fond_50.jpg') }}')">
+                    <img src="{{ url_for('static', filename='images/parcours/trace_50.svg') }}" alt="Tracé Ultra-Trail 50 km" class="absolute top-4 right-4 h-16 w-16 object-contain opacity-90" loading="lazy">
+                    <p class="text-xs font-bold uppercase tracking-wider text-emerald-400">Grand défi</p>
                     <p class="mt-3 text-4xl font-extrabold">50 km</p>
-                    <p class="text-sm text-emerald-50">Ultra-Trail</p>
-                    <ul class="mt-5 space-y-1.5 text-sm text-emerald-50">
+                    <p class="text-sm text-slate-300">Ultra-Trail</p>
+                    <ul class="mt-5 space-y-1.5 text-sm text-slate-300">
                         <li>⏱️ Départ 07h00</li>
                         <li>🏅 2 points ITRA</li>
                         <li>👕 T-shirt officiel inclus</li>
+                        <li>⛰️ 50,9 km · +1 150 m D+</li>
+                        <li>⌛ Barrière horaire 10 h</li>
                     </ul>
-                    <p class="mt-6 text-2xl font-bold">100 DT</p>
+                    <a href="{{ url_for('static', filename='images/parcours/COURSE_50.gpx') }}" download class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-300 hover:text-emerald-200"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>Télécharger le GPX</a>
+                    <p class="mt-auto pt-6 text-2xl font-bold">100 DT</p>
                 </div>
-                <div class="rounded-2xl bg-slate-800 p-6 ring-1 ring-white/10">
+                <div class="carte-course flex flex-col rounded-2xl p-6 ring-1 ring-white/10" role="button" tabindex="0" aria-pressed="false" style="--fond: url('{{ url_for('static', filename='images/parcours/fond_22.jpg') }}')">
+                    <img src="{{ url_for('static', filename='images/parcours/trace_22.svg') }}" alt="Tracé Trail 22 km" class="absolute top-4 right-4 h-16 w-16 object-contain opacity-90" loading="lazy">
                     <p class="text-xs font-bold uppercase tracking-wider text-emerald-400">Chronométré</p>
                     <p class="mt-3 text-4xl font-extrabold">22 km</p>
                     <p class="text-sm text-slate-300">Trail</p>
@@ -264,30 +322,47 @@
                         <li>⏱️ Départ 08h30</li>
                         <li>🏅 1 point ITRA</li>
                         <li>📡 Puce électronique</li>
+                        <li>⛰️ 22 km · +357 m D+</li>
+                        <li>⌛ Barrière horaire 4 h</li>
                     </ul>
-                    <p class="mt-6 text-2xl font-bold">35 DT</p>
+                    <a href="{{ url_for('static', filename='images/parcours/COURSE-22.gpx') }}" download class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-300 hover:text-emerald-200"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>Télécharger le GPX</a>
+                    <p class="mt-auto pt-6 text-2xl font-bold">35 DT</p>
                 </div>
-                <div class="rounded-2xl bg-slate-800 p-6 ring-1 ring-white/10">
+                <div class="carte-course flex flex-col rounded-2xl p-6 ring-1 ring-white/10" role="button" tabindex="0" aria-pressed="false" style="--fond: url('{{ url_for('static', filename='images/parcours/fond_10.jpg') }}')">
+                    <img src="{{ url_for('static', filename='images/parcours/trace_10.svg') }}" alt="Tracé Mini-Trail 10 km" class="absolute top-4 right-4 h-16 w-16 object-contain opacity-90" loading="lazy">
                     <p class="text-xs font-bold uppercase tracking-wider text-emerald-400">Chronométré</p>
                     <p class="mt-3 text-4xl font-extrabold">10 km</p>
                     <p class="text-sm text-slate-300">Mini-Trail</p>
                     <ul class="mt-5 space-y-1.5 text-sm text-slate-300">
                         <li>⏱️ Départ 08h30</li>
                         <li>📡 Puce électronique</li>
+                        <li>⛰️ 10,4 km · +129 m D+</li>
+                        <li>⌛ Barrière horaire 2 h</li>
                     </ul>
-                    <p class="mt-6 text-2xl font-bold">20 DT</p>
+                    <a href="{{ url_for('static', filename='images/parcours/COURSE-10.gpx') }}" download class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-300 hover:text-emerald-200"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>Télécharger le GPX</a>
+                    <p class="mt-auto pt-6 text-2xl font-bold">20 DT</p>
                 </div>
-                <div class="rounded-2xl bg-slate-800 p-6 ring-1 ring-white/10">
+                <div class="carte-course flex flex-col rounded-2xl p-6 ring-1 ring-white/10" role="button" tabindex="0" aria-pressed="false" style="--fond: url('{{ url_for('static', filename='images/parcours/fond_10.jpg') }}')">
+                    <img src="{{ url_for('static', filename='images/parcours/trace_10.svg') }}" alt="Tracé Trail Découverte 10 km" class="absolute top-4 right-4 h-16 w-16 object-contain opacity-90" loading="lazy">
                     <p class="text-xs font-bold uppercase tracking-wider text-emerald-400">Loisir</p>
                     <p class="mt-3 text-4xl font-extrabold">10 km</p>
                     <p class="text-sm text-slate-300">Trail Découverte</p>
                     <ul class="mt-5 space-y-1.5 text-sm text-slate-300">
                         <li>⏱️ Départ 08h30</li>
                         <li>🚶 Sans chronométrage</li>
+                        <li>⛰️ 10,4 km · +129 m D+</li>
+                        <li>⌛ Barrière horaire 2 h</li>
                     </ul>
-                    <p class="mt-6 text-2xl font-bold">15 DT</p>
+                    <a href="{{ url_for('static', filename='images/parcours/COURSE-10.gpx') }}" download class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-300 hover:text-emerald-200"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>Télécharger le GPX</a>
+                    <p class="mt-auto pt-6 text-2xl font-bold">15 DT</p>
                 </div>
-                <div class="rounded-2xl bg-slate-800 p-6 ring-1 ring-white/10">
+                <div class="carte-course flex flex-col rounded-2xl p-6 ring-1 ring-white/10" role="button" tabindex="0" aria-pressed="false" style="--fond: linear-gradient(135deg, #065f46, #0f172a)">
+                    <!-- Pas de tracé disponible pour le 1 km : icône générique -->
+                    <svg class="absolute top-4 right-4 h-16 w-16 opacity-90" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+                        <ellipse cx="50" cy="52" rx="38" ry="28" stroke="#34d399" stroke-width="2.6" stroke-dasharray="7 6" stroke-linecap="round"/>
+                        <circle cx="12" cy="52" r="3.6" fill="#facc15" stroke="#0f172a" stroke-width="1.2"/>
+                        <text x="50" y="60" text-anchor="middle" font-size="24">🦸</text>
+                    </svg>
                     <p class="text-xs font-bold uppercase tracking-wider text-emerald-400">Enfants</p>
                     <p class="mt-3 text-4xl font-extrabold">1 km</p>
                     <p class="text-sm text-slate-300">Course des Super Héros</p>
@@ -295,7 +370,7 @@
                         <li>⏱️ Départ 08h45</li>
                         <li>🦸 Initiation au trail</li>
                     </ul>
-                    <p class="mt-6 text-2xl font-bold">10 DT</p>
+                    <p class="mt-auto pt-6 text-2xl font-bold">10 DT</p>
                 </div>
             </div>
         </div>
@@ -304,81 +379,93 @@
     <!-- ===================================================================== -->
     <!-- DASHBOARD STATISTIQUES                                                -->
     <!-- ===================================================================== -->
-    <section id="statistiques" class="py-24 scroll-mt-16">
+    <section id="statistiques" class="py-24 scroll-mt-28">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                 <div class="max-w-2xl">
                     <p class="text-emerald-700 font-semibold text-sm uppercase tracking-widest">Tableau de bord</p>
-                    <h2 class="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Le Rimel Challenge en chiffres</h2>
+                    <h2 class="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Statistiques en Direct</h2>
+                    <p class="mt-3 text-slate-600">Les inscriptions de l'édition 2026, actualisées automatiquement.</p>
                 </div>
                 <span class="inline-flex items-center gap-2 text-xs font-medium text-slate-500">
                     <span class="relative flex h-2.5 w-2.5">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                     </span>
-                    Données en direct · <span id="statsMaj">chargement…</span>
+                    <span id="liveMaj">chargement…</span>
                 </span>
             </div>
 
-            <div id="statsErreur" class="hidden mt-8 p-4 rounded-xl bg-rose-50 text-rose-700 text-sm border border-rose-200">
-                Impossible de charger les statistiques pour le moment.
+            <div id="liveIndisponible" class="hidden mt-8 p-4 rounded-xl bg-amber-50 text-amber-800 text-sm ring-1 ring-amber-200">
+                Les statistiques en direct sont momentanément indisponibles. Réessayez dans quelques instants.
             </div>
 
-            <div class="mt-10 grid gap-6 lg:grid-cols-3">
-                <!-- Inscriptions en direct -->
-                <div class="rounded-3xl bg-white p-7 shadow-sm ring-1 ring-slate-200">
-                    <p class="text-sm font-semibold text-slate-500">Inscriptions 2026</p>
-                    <p class="mt-3 flex items-baseline gap-2">
-                        <span id="statInscrits" class="text-5xl font-extrabold text-slate-900 tabular-nums">—</span>
-                        <span class="text-slate-500 text-sm">coureurs inscrits</span>
-                    </p>
-                    <div class="mt-6 h-3 rounded-full bg-slate-100 overflow-hidden" role="progressbar" aria-label="Taux de remplissage" aria-valuemin="0" aria-valuemax="100" id="statJauge">
-                        <div id="statJaugeBarre" class="h-full rounded-full bg-emerald-500 transition-all duration-1000" style="width: 0%"></div>
-                    </div>
-                    <div class="mt-3 flex justify-between text-sm">
-                        <span class="text-slate-500"><span id="statRemplissage" class="font-semibold text-slate-800">—</span> de remplissage</span>
-                        <span class="text-emerald-700 font-semibold"><span id="statRestantes">—</span> places restantes</span>
-                    </div>
-                </div>
-
-                <!-- Historique -->
-                <div class="rounded-3xl bg-white p-7 shadow-sm ring-1 ring-slate-200 lg:col-span-2">
+            <!-- KPI -->
+            <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                <div class="rounded-3xl bg-slate-900 text-white p-6 shadow-sm">
                     <div class="flex items-center justify-between">
-                        <p class="text-sm font-semibold text-slate-500">Participants par édition</p>
-                        <p class="text-xs text-slate-400">% = taux de finishers</p>
+                        <p class="text-sm font-semibold text-slate-300">Total inscrits</p>
+                        <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[11px] font-bold text-emerald-300 ring-1 ring-emerald-400/30">
+                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>LIVE
+                        </span>
                     </div>
-                    <div id="statHistorique" class="mt-6 h-48 flex items-end gap-4 sm:gap-8" aria-label="Historique de participation par édition"></div>
+                    <p class="mt-4 text-4xl font-extrabold"><span class="compteur" data-live="total">—</span></p>
+                    <p class="mt-1 text-xs text-slate-400">toutes épreuves confondues</p>
                 </div>
-
-                <!-- Impact vert -->
-                <div class="rounded-3xl bg-emerald-900 text-white p-7 shadow-sm lg:col-span-3 grid gap-6 sm:grid-cols-3 items-center">
-                    <div>
-                        <p class="text-sm font-semibold text-emerald-300">Impact écologique</p>
-                        <p class="mt-2 text-slate-200 text-sm leading-relaxed">Reboisement en partenariat avec le WWF North Africa et la Direction Générale des Forêts (DGF).</p>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <span class="text-4xl">🌳</span>
-                        <div>
-                            <p id="statArbres" class="text-4xl font-extrabold tabular-nums">—</p>
-                            <p class="text-sm text-emerald-200">arbres plantés</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <span class="text-4xl">🧺</span>
-                        <div>
-                            <p class="text-4xl font-extrabold tabular-nums"><span id="statDechets">—</span> <span class="text-xl font-bold">kg</span></p>
-                            <p class="text-sm text-emerald-200">de déchets récoltés</p>
-                        </div>
-                    </div>
+                <div class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+                    <p class="text-sm font-semibold text-slate-500">Validés</p>
+                    <p class="mt-4 text-4xl font-extrabold text-emerald-700"><span class="compteur" data-live="valides">—</span></p>
+                    <p class="mt-1 text-xs text-slate-500"><span data-live-pct="valides">—</span> des inscrits · inscription confirmée</p>
+                </div>
+                <div class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+                    <p class="text-sm font-semibold text-slate-500">Préinscrits</p>
+                    <p class="mt-4 text-4xl font-extrabold text-amber-600"><span class="compteur" data-live="preinscrits">—</span></p>
+                    <p class="mt-1 text-xs text-slate-500"><span data-live-pct="preinscrits">—</span> des inscrits · en cours de finalisation</p>
+                </div>
+                <div class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+                    <p class="text-sm font-semibold text-slate-500">Diversité</p>
+                    <p class="mt-4 text-4xl font-extrabold text-slate-900"><span class="compteur" data-live="nb_pays">—</span> <span class="text-lg font-bold text-slate-500">pays</span></p>
+                    <p class="mt-1 text-xs text-slate-500">nationalités représentées</p>
                 </div>
             </div>
+
+            <div class="mt-6 grid gap-6 lg:grid-cols-3">
+                <!-- Démographie -->
+                <div class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+                    <p class="text-sm font-semibold text-slate-500">Répartition des coureurs</p>
+                    <ul id="liveDemographie" class="mt-5 space-y-5"></ul>
+                </div>
+
+                <!-- Par course -->
+                <div class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200 lg:col-span-2">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <p class="text-sm font-semibold text-slate-500">Effectifs par épreuve</p>
+                        <p class="flex items-center gap-3 text-xs text-slate-500">
+                            <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-emerald-500"></span>Validés</span>
+                            <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-amber-400"></span>Préinscrits</span>
+                        </p>
+                    </div>
+                    <div id="liveCourses" class="mt-5 space-y-4"></div>
+                </div>
+            </div>
+
+            <!-- Pays -->
+            <div class="mt-6 rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+                <p class="text-sm font-semibold text-slate-500">Pays et nationalités représentés</p>
+                <div id="livePays" class="mt-4 flex flex-wrap gap-2"></div>
+            </div>
+
+            <p class="mt-4 text-xs text-slate-500">
+                Validé : inscription réglée (paiement en ligne par carte ou dossard attribué). Préinscrit : paiement en espèces à finaliser
+                auprès d'un bureau partenaire ou le Jour J à la table d'accueil. Données agrégées et anonymes.
+            </p>
         </div>
     </section>
 
     <!-- ===================================================================== -->
     <!-- ENGAGEMENT ÉCO & SPORTIF                                              -->
     <!-- ===================================================================== -->
-    <section id="ecologie" class="py-24 bg-white scroll-mt-16">
+    <section id="ecologie" class="py-24 bg-white scroll-mt-28">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="grid gap-12 lg:grid-cols-2 items-center">
                 <div class="relative h-[420px] rounded-3xl overflow-hidden shadow-xl photo-fond bg-gradient-to-br from-amber-400 via-emerald-600 to-slate-900"
@@ -396,6 +483,17 @@
                         Symbole de liberté, le chardonneret porte le message de cette édition : protéger les
                         74 espèces d'oiseaux menacées en Tunisie et lutter contre leur capture illégale.
                     </p>
+
+                    <div class="mt-6 grid grid-cols-2 gap-4">
+                        <div class="rounded-2xl bg-emerald-900 text-white p-4">
+                            <p class="text-2xl font-extrabold">🌳 1 200</p>
+                            <p class="text-xs text-emerald-200 mt-1">arbres plantés avec le WWF North Africa et la DGF</p>
+                        </div>
+                        <div class="rounded-2xl bg-emerald-900 text-white p-4">
+                            <p class="text-2xl font-extrabold">🧺 450 kg</p>
+                            <p class="text-xs text-emerald-200 mt-1">de déchets récoltés</p>
+                        </div>
+                    </div>
 
                     <div class="mt-8 space-y-4">
                         <div class="flex gap-4 p-5 rounded-2xl bg-rose-50 ring-1 ring-rose-100">
@@ -462,30 +560,39 @@
                 <div class="flex items-center gap-3">
                     <span class="h-10 w-10 rounded-full bg-white/15 flex items-center justify-center text-xl">🐦</span>
                     <div>
-                        <p class="font-bold leading-tight">Assistant Trail</p>
+                        <p class="font-bold leading-tight whitespace-nowrap">Assistant Trail</p>
                         <p class="text-xs text-emerald-200 flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-emerald-300"></span>En ligne</p>
                     </div>
                 </div>
+                <div class="flex items-center gap-1">
+                <button id="chatNouvelle" type="button" title="Nouvelle discussion"
+                        class="flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-medium text-emerald-100/80 hover:text-white hover:bg-white/10 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5M5.6 15A7 7 0 0018.4 15M18.4 9A7 7 0 005.6 9"/></svg>
+                    <span class="hidden sm:inline whitespace-nowrap">Nouvelle discussion</span>
+                </button>
                 <button id="chatFermer" class="p-1.5 rounded-full hover:bg-white/10" aria-label="Fermer l'assistant">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
+                </div>
             </div>
 
             <div id="chatHistorique" class="chat-scroll flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50 scroll-smooth">
-                <div class="flex">
+                <div class="flex" id="chatAccueil">
                     <div class="bg-white text-slate-800 px-4 py-2.5 rounded-2xl rounded-tl-sm text-sm shadow-sm ring-1 ring-slate-200 max-w-[85%]">
-                        👋 Bonjour ! Je suis l'assistant officiel du Rimel Challenge. Choisissez un thème ou posez directement votre question.
+                        👋 Bonjour ! Je suis l'assistant officiel du Rimel Challenge. Posez votre question ou choisissez une suggestion : vous pouvez changer de sujet à tout moment.
                     </div>
-                </div>
-                <div id="chatThemes" class="grid grid-cols-2 gap-2 pt-1">
-                    <button data-question="Quel parcours me conseillez-vous selon mon niveau ?" class="chat-theme text-left text-xs font-medium bg-white hover:bg-emerald-50 hover:ring-emerald-300 ring-1 ring-slate-200 rounded-xl px-3 py-2.5 transition">🏃 Choix du parcours</button>
-                    <button data-question="Racontez-moi l'histoire du Rimel Challenge et de son territoire." class="chat-theme text-left text-xs font-medium bg-white hover:bg-emerald-50 hover:ring-emerald-300 ring-1 ring-slate-200 rounded-xl px-3 py-2.5 transition">🌲 Histoire &amp; Territoire</button>
-                    <button data-question="Comment venir au village du trail et où dormir sur place ?" class="chat-theme text-left text-xs font-medium bg-white hover:bg-emerald-50 hover:ring-emerald-300 ring-1 ring-slate-200 rounded-xl px-3 py-2.5 transition">🚌 Transport &amp; Logistique</button>
-                    <button data-question="Quelles sont les statistiques de participation et les résultats des éditions précédentes ?" class="chat-theme text-left text-xs font-medium bg-white hover:bg-emerald-50 hover:ring-emerald-300 ring-1 ring-slate-200 rounded-xl px-3 py-2.5 transition">📊 Statistiques &amp; Résultats</button>
                 </div>
             </div>
 
-            <form id="chatForm" class="border-t border-slate-200 p-3 flex items-center gap-2 bg-white">
+            <!-- Thèmes : accueil court et statique (aucun appel au LLM), sans verrouiller de thème -->
+            <div id="chatSuggestions" class="chat-scroll flex gap-2 overflow-x-auto px-3 pt-2.5 pb-1 bg-white border-t border-slate-200" aria-label="Suggestions de questions">
+                <button type="button" data-theme="parcours" class="chat-theme shrink-0 text-xs font-medium bg-slate-50 hover:bg-emerald-50 hover:ring-emerald-300 ring-1 ring-slate-200 rounded-full px-3 py-1.5 transition">🏃 Parcours</button>
+                <button type="button" data-theme="logistique" class="chat-theme shrink-0 text-xs font-medium bg-slate-50 hover:bg-emerald-50 hover:ring-emerald-300 ring-1 ring-slate-200 rounded-full px-3 py-1.5 transition">🎟️ Inscriptions &amp; Logistique</button>
+                <button type="button" data-theme="patrimoine" class="chat-theme shrink-0 text-xs font-medium bg-slate-50 hover:bg-emerald-50 hover:ring-emerald-300 ring-1 ring-slate-200 rounded-full px-3 py-1.5 transition">🕌 Patrimoine</button>
+                <button type="button" data-theme="coach" class="chat-theme shrink-0 text-xs font-medium bg-slate-50 hover:bg-emerald-50 hover:ring-emerald-300 ring-1 ring-slate-200 rounded-full px-3 py-1.5 transition">💪 Coach</button>
+            </div>
+
+            <form id="chatForm" class="p-3 pt-2 flex items-center gap-2 bg-white">
                 <input id="chatSaisie" type="text" maxlength="500" autocomplete="off" required
                        placeholder="Votre question…"
                        class="flex-1 bg-slate-100 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
@@ -494,6 +601,10 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M13 6l6 6-6 6"/></svg>
                 </button>
             </form>
+            <p class="px-4 pb-2.5 -mt-1 bg-white text-[10px] leading-snug text-slate-400">
+                Réponses historiques générées à partir des travaux de M. Mohamed Hedi Kaabori (leplacartuel.com) et de la thèse de M. Mohamed Ali Hbaieb.
+                Veuillez consulter les sources originales pour toute référence officielle.
+            </p>
         </section>
 
         <!-- Bouton flottant -->
@@ -524,93 +635,143 @@
         menuMobile.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menuMobile.classList.add('hidden')));
 
         // ---------------------------------------------------------------------
-        // Dashboard statistiques
+        // Cartes des courses : sélection (vert foncé)
+        // ---------------------------------------------------------------------
+        const cartesCourses = document.querySelectorAll('.carte-course');
+        function selectionnerCourse(carte) {
+            const dejaActive = carte.classList.contains('selectionnee');
+            cartesCourses.forEach(c => { c.classList.remove('selectionnee'); c.setAttribute('aria-pressed', 'false'); });
+            if (!dejaActive) { carte.classList.add('selectionnee'); carte.setAttribute('aria-pressed', 'true'); }
+        }
+        cartesCourses.forEach(carte => {
+            carte.addEventListener('click', e => { if (!e.target.closest('a')) selectionnerCourse(carte); });
+            carte.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectionnerCourse(carte); }
+            });
+        });
+
+        // ---------------------------------------------------------------------
+        // Statistiques d'inscription en direct (bandeau + section), polling 30 s
         // ---------------------------------------------------------------------
         const fmt = new Intl.NumberFormat('fr-FR');
+        const valeursLive = {};
 
-        function animerCompteur(el, cible) {
-            const debut = performance.now();
-            const duree = 1200;
+        function majCompteur(el, valeur, cle) {
+            const avant = valeursLive[cle];
+            if (avant === undefined || avant === valeur) {
+                el.textContent = fmt.format(valeur);
+                return;
+            }
+            // Défilement rapide de l'ancienne à la nouvelle valeur, puis flash vert si hausse
+            const debut = performance.now(), duree = 700;
             (function etape(t) {
                 const p = Math.min((t - debut) / duree, 1);
-                el.textContent = fmt.format(Math.round(cible * (1 - Math.pow(1 - p, 3))));
+                el.textContent = fmt.format(Math.round(avant + (valeur - avant) * (1 - Math.pow(1 - p, 3))));
                 if (p < 1) requestAnimationFrame(etape);
             })(debut);
+            if (valeur > avant) {
+                el.classList.remove('compteur-flash');
+                void el.offsetWidth;  // relance l'animation
+                el.classList.add('compteur-flash');
+            }
         }
 
-        function afficherHistorique(historique) {
-            const conteneur = document.getElementById('statHistorique');
-            const max = Math.max(...historique.map(h => h.participants));
-            conteneur.replaceChildren(...historique.map((h, i) => {
-                const colonne = document.createElement('div');
-                colonne.className = 'flex-1 h-full flex flex-col items-center justify-end gap-2';
+        const pct = (n, total) => total ? `${Math.round(100 * n / total)} %` : '—';
+        const drapeau = code => /^[A-Z]{2}$/.test(code)
+            ? String.fromCodePoint(...[...code].map(c => 0x1F1E6 + c.charCodeAt(0) - 65)) : '🏳️';
 
-                const valeur = document.createElement('span');
-                valeur.className = 'text-sm font-bold text-slate-800 tabular-nums';
-                valeur.textContent = fmt.format(h.participants);
-
-                const barre = document.createElement('div');
-                const derniere = i === historique.length - 1;
-                barre.className = 'w-full max-w-[72px] rounded-t-xl transition-all duration-1000 ease-out '
-                    + (derniere ? 'bg-emerald-500' : 'bg-emerald-200');
-                barre.style.height = '0%';
-                barre.title = `${h.edition} édition (${h.annee}) : ${h.participants} participants, ${h.finishers_pct} % de finishers`;
-                requestAnimationFrame(() => requestAnimationFrame(() => {
-                    barre.style.height = `${(h.participants / max) * 75}%`;
-                }));
-
-                const legende = document.createElement('div');
-                legende.className = 'text-center leading-tight';
-                legende.innerHTML = '<p class="text-xs font-semibold text-slate-700"></p><p class="text-[11px] text-slate-400"></p>';
-                legende.children[0].textContent = h.annee;
-                legende.children[1].textContent = `${h.edition} · ${h.finishers_pct} %`;
-
-                colonne.append(valeur, barre, legende);
-                return colonne;
+        function afficherDemographie(demo) {
+            const total = demo.hommes + demo.femmes + demo.enfants + demo.non_renseigne;
+            const lignes = [
+                ['♂', 'Hommes', demo.hommes, 'bg-sky-500'],
+                ['♀', 'Femmes', demo.femmes, 'bg-pink-500'],
+                ['🧒', 'Enfants (Kids)', demo.enfants, 'bg-amber-400'],
+            ];
+            document.getElementById('liveDemographie').replaceChildren(...lignes.map(([icone, nom, n, couleur]) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<div class="flex items-center justify-between text-sm">
+                        <span class="flex items-center gap-2 font-medium text-slate-700"><span class="w-5 text-center text-base"></span><span></span></span>
+                        <span class="tabular-nums"><b class="text-slate-900"></b> <span class="text-slate-400"></span></span>
+                    </div>
+                    <div class="mt-2 h-2 rounded-full bg-slate-100 overflow-hidden"><div class="h-full rounded-full transition-all duration-700 ${couleur}"></div></div>`;
+                const [sIcone, sNom] = li.querySelectorAll('.font-medium > span');
+                sIcone.textContent = icone; sNom.textContent = nom;
+                li.querySelector('b').textContent = fmt.format(n);
+                li.querySelector('.text-slate-400').textContent = pct(n, total);
+                li.querySelector('.h-full').style.width = total ? `${100 * n / total}%` : '0%';
+                return li;
             }));
         }
 
-        let statsDejaAffichees = false;
+        function afficherCourses(courses) {
+            const max = Math.max(1, ...courses.map(c => c.total));
+            document.getElementById('liveCourses').replaceChildren(...courses.map(c => {
+                const ligne = document.createElement('div');
+                ligne.innerHTML = `<div class="flex flex-wrap items-baseline justify-between gap-x-4 text-sm">
+                        <span class="font-semibold text-slate-800"></span>
+                        <span class="text-xs text-slate-500 tabular-nums"><b class="text-sm text-slate-900"></b> inscrits ·
+                            <span class="text-emerald-700 font-semibold"></span> validés ·
+                            <span class="text-amber-600 font-semibold"></span> préinscrits</span>
+                    </div>
+                    <div class="mt-2 h-3 rounded-full bg-slate-100 overflow-hidden" style="width:100%">
+                        <div class="h-full flex transition-all duration-700">
+                            <div class="h-full bg-emerald-500"></div><div class="h-full bg-amber-400"></div>
+                        </div>
+                    </div>`;
+                ligne.querySelector('.font-semibold').textContent = c.nom;
+                ligne.querySelector('b').textContent = fmt.format(c.total);
+                ligne.querySelector('.text-emerald-700').textContent = fmt.format(c.valides);
+                ligne.querySelector('.text-amber-600').textContent = fmt.format(c.preinscrits);
+                const barre = ligne.querySelector('.flex.transition-all');
+                barre.style.width = `${100 * c.total / max}%`;
+                const [bv, bp] = barre.children;
+                bv.style.width = c.total ? `${100 * c.valides / c.total}%` : '0';
+                bp.style.width = c.total ? `${100 * c.preinscrits / c.total}%` : '0';
+                ligne.title = `${c.nom} : ${c.total} inscrits (${c.valides} validés, ${c.preinscrits} préinscrits)`;
+                return ligne;
+            }));
+        }
 
-        async function chargerStats() {
+        function afficherPays(pays) {
+            document.getElementById('livePays').replaceChildren(...pays.map(p => {
+                const badge = document.createElement('span');
+                badge.className = 'inline-flex items-center gap-2 rounded-full bg-slate-50 ring-1 ring-slate-200 px-3 py-1.5 text-sm';
+                badge.innerHTML = '<span class="text-base leading-none"></span><span class="font-medium text-slate-700"></span><span class="text-xs text-slate-400 tabular-nums"></span>';
+                badge.children[0].textContent = drapeau(p.code);
+                badge.children[1].textContent = p.nom;
+                badge.children[2].textContent = fmt.format(p.inscrits);
+                return badge;
+            }));
+        }
+
+        async function chargerStatsLive() {
             try {
-                const res = await fetch('/api/stats');
-                if (!res.ok) throw new Error();
-                const { direct, historique, impact_vert } = await res.json();
+                const res = await fetch('/api/stats', { cache: 'no-store' });
+                if (!res.ok) throw new Error(res.status);
+                const d = await res.json();
+                if (!d.disponible) throw new Error('indisponible');
 
-                const total = direct.inscrits_actuels + direct.places_restantes;
-                const pct = total ? Math.round((direct.inscrits_actuels / total) * 100) : 0;
-
-                animerCompteur(document.getElementById('statInscrits'), direct.inscrits_actuels);
-                document.getElementById('statRestantes').textContent = fmt.format(direct.places_restantes);
-                document.getElementById('statRemplissage').textContent = `${pct} %`;
-                document.getElementById('statJaugeBarre').style.width = `${pct}%`;
-                document.getElementById('statJauge').setAttribute('aria-valuenow', pct);
-
-                if (!statsDejaAffichees) {
-                    afficherHistorique(historique);
-                    animerCompteur(document.getElementById('statArbres'), impact_vert.arbres_plantes);
-                    animerCompteur(document.getElementById('statDechets'), impact_vert.dechets_recoltes_kg);
-                    statsDejaAffichees = true;
+                for (const cle of ['total', 'valides', 'preinscrits', 'nb_pays']) {
+                    document.querySelectorAll(`[data-live="${cle}"]`).forEach(el => majCompteur(el, d[cle], cle));
+                    valeursLive[cle] = d[cle];
                 }
+                document.querySelectorAll('[data-live-pct]').forEach(el => { el.textContent = pct(d[el.dataset.livePct], d.total); });
+                afficherDemographie(d.demographie);
+                afficherCourses(d.courses);
+                afficherPays(d.pays);
 
-                document.getElementById('statsMaj').textContent =
-                    'mis à jour à ' + new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-                document.getElementById('statsErreur').classList.add('hidden');
+                const heure = new Date(d.mis_a_jour).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+                document.getElementById('liveMaj').textContent = d.source === 'supabase'
+                    ? `En direct · mis à jour à ${heure}` : `Dernières données disponibles (${heure})`;
+                document.getElementById('liveIndisponible').classList.add('hidden');
             } catch {
-                document.getElementById('statsErreur').classList.remove('hidden');
-                document.getElementById('statsMaj').textContent = 'indisponible';
+                document.getElementById('liveMaj').textContent = 'indisponible';
+                document.getElementById('liveIndisponible').classList.remove('hidden');
             }
         }
 
-        // Lance le chargement quand la section devient visible (animations visibles), puis rafraîchit chaque minute.
-        new IntersectionObserver((entrees, obs) => {
-            if (entrees.some(e => e.isIntersecting)) {
-                obs.disconnect();
-                chargerStats();
-                setInterval(chargerStats, 60000);
-            }
-        }, { threshold: 0.2 }).observe(document.getElementById('statistiques'));
+        chargerStatsLive();
+        setInterval(() => { if (!document.hidden) chargerStatsLive(); }, 30000);
 
         // ---------------------------------------------------------------------
         // Carte du circuit culturel (Leaflet)
@@ -755,7 +916,8 @@
         const chatBulle = document.getElementById('chatBulle');
         const chatPastille = document.getElementById('chatPastille');
         const chatHistorique = document.getElementById('chatHistorique');
-        const chatThemes = document.getElementById('chatThemes');
+        const chatSuggestions = document.getElementById('chatSuggestions');
+        const chatAccueil = document.getElementById('chatAccueil');
         const chatForm = document.getElementById('chatForm');
         const chatSaisie = document.getElementById('chatSaisie');
         const chatEnvoyer = document.getElementById('chatEnvoyer');
@@ -794,9 +956,30 @@
             chatHistorique.scrollTo({ top: chatHistorique.scrollHeight, behavior: 'smooth' });
         }
 
-        function ajouterMessage(auteur, texte, erreur = false) {
+        // --- Session de conversation (mémoire côté serveur, affichage restauré côté client)
+        const CLE_SESSION = 'rimelChatSession';
+        const CLE_MESSAGES = 'rimelChatMessages';
+
+        function nouvelIdentifiant() {
+            if (crypto.randomUUID) return crypto.randomUUID();
+            // crypto.randomUUID n'existe qu'en contexte sécurisé (HTTPS / localhost)
+            return [...crypto.getRandomValues(new Uint8Array(16))].map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+        let sessionId = sessionStorage.getItem(CLE_SESSION) || nouvelIdentifiant();
+        sessionStorage.setItem(CLE_SESSION, sessionId);
+
+        function lireMessages() {
+            try { return JSON.parse(sessionStorage.getItem(CLE_MESSAGES)) || []; } catch { return []; }
+        }
+        function memoriserMessage(auteur, texte, erreur) {
+            const messages = lireMessages();
+            messages.push({ auteur, texte, erreur });
+            sessionStorage.setItem(CLE_MESSAGES, JSON.stringify(messages.slice(-40)));
+        }
+
+        function ajouterMessage(auteur, texte, erreur = false, memoriser = true) {
             const ligne = document.createElement('div');
-            ligne.className = auteur === 'user' ? 'flex justify-end' : 'flex';
+            ligne.className = 'chat-message ' + (auteur === 'user' ? 'flex justify-end' : 'flex');
             const bulle = document.createElement('div');
             bulle.className = 'px-4 py-2.5 rounded-2xl text-sm max-w-[85%] whitespace-pre-line shadow-sm '
                 + (auteur === 'user'
@@ -807,8 +990,29 @@
             bulle.textContent = texte;
             ligne.appendChild(bulle);
             chatHistorique.appendChild(ligne);
+            if (memoriser) memoriserMessage(auteur, texte, erreur);
             defilerEnBas();
         }
+
+        // Restaure la conversation en cours après un rechargement de page
+        lireMessages().forEach(m => ajouterMessage(m.auteur, m.texte, m.erreur, false));
+
+        function nouvelleDiscussion() {
+            fetch('/api/chat/reset', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ session_id: sessionId })
+            }).catch(() => {});
+            sessionId = nouvelIdentifiant();
+            sessionStorage.setItem(CLE_SESSION, sessionId);
+            sessionStorage.removeItem(CLE_MESSAGES);
+            sessionStorage.removeItem('rimelChatTheme');
+            themeSuggere = null;
+            chatHistorique.querySelectorAll('.chat-message').forEach(el => el.remove());
+            chatSaisie.value = '';
+            chatSaisie.focus();
+        }
+        document.getElementById('chatNouvelle').addEventListener('click', nouvelleDiscussion);
 
         function afficherFrappe() {
             const ligne = document.createElement('div');
@@ -820,11 +1024,12 @@
             return ligne;
         }
 
+        let envoiEnCours = false;
         async function envoyerQuestion(question) {
             question = question.trim();
-            if (!question) return;
+            if (!question || envoiEnCours) return;
+            envoiEnCours = true;
 
-            chatThemes.remove();
             ajouterMessage('user', question);
             chatSaisie.value = '';
             chatSaisie.disabled = chatEnvoyer.disabled = true;
@@ -834,22 +1039,42 @@
                 const res = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: question })
+                    body: JSON.stringify({ message: question, session_id: sessionId, theme: themeSuggere })
                 });
                 const data = await res.json().catch(() => ({}));
+                if (data.session_id && data.session_id !== sessionId) {
+                    sessionId = data.session_id;
+                    sessionStorage.setItem(CLE_SESSION, sessionId);
+                }
                 frappe.remove();
                 ajouterMessage('bot', data.reply || 'Une erreur est survenue. Merci de réessayer.', !res.ok);
             } catch {
                 frappe.remove();
                 ajouterMessage('bot', 'Erreur de connexion au serveur. Vérifiez votre connexion et réessayez.', true);
             } finally {
+                envoiEnCours = false;
                 chatSaisie.disabled = chatEnvoyer.disabled = false;
                 chatSaisie.focus();
             }
         }
 
-        chatThemes.querySelectorAll('.chat-theme').forEach(btn =>
-            btn.addEventListener('click', () => envoyerQuestion(btn.dataset.question)));
+        // Accueil statique par thème : aucun appel serveur, aucune fausse question injectée.
+        const ACCUEILS = {
+            parcours: "Bonjour ! Je suis votre guide pour les épreuves du Rimel Challenge (50K, 22K, 10K, Kids). Avez-vous une question sur un tracé, les dénivelés ou le profil d'une course ?",
+            logistique: "Bonjour ! Je vous renseigne sur les inscriptions, le retrait des dossards ou l'accès au village en forêt de Rimel. Quelle est votre question ?",
+            patrimoine: "Bonjour ! Je réponds à vos questions sur l'histoire de Menzel Jemil et le patrimoine local à partir des archives documentées. Quel aspect souhaitez-vous aborder ?",
+            coach: "Bonjour ! Je vous conseille sur votre préparation physique et la gestion de votre effort pour le trail. Quel est votre objectif ?",
+        };
+        // Simple indice transmis au serveur : une question explicite sur un autre sujet reste aiguillée normalement.
+        let themeSuggere = sessionStorage.getItem('rimelChatTheme') || null;
+
+        chatSuggestions.querySelectorAll('.chat-theme').forEach(btn =>
+            btn.addEventListener('click', () => {
+                themeSuggere = btn.dataset.theme;
+                sessionStorage.setItem('rimelChatTheme', themeSuggere);
+                ajouterMessage('bot', ACCUEILS[themeSuggere]);
+                chatSaisie.focus();
+            }));
 
         chatForm.addEventListener('submit', e => {
             e.preventDefault();
