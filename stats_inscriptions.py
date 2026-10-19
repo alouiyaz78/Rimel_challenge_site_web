@@ -1,7 +1,8 @@
 """Statistiques d'inscription en direct du Rimel Challenge (Supabase).
 
 Lecture REST de la table `registrations` (colonnes neutres uniquement : distance, paiement, nat, sexe,
-dossard), agrégation en mémoire côté serveur : le navigateur ne reçoit que des totaux, jamais une ligne
+dossard). Si la base client est en erreur ou vide (accès RLS retiré), mode dégradé comme le guichet :
+copie de secours `registration_snapshot` de la base OPS (OPS_SUPABASE_URL / OPS_SUPABASE_KEY). Agrégation en mémoire côté serveur : le navigateur ne reçoit que des totaux, jamais une ligne
 individuelle ni un montant.
 
 Règle de statut (la table n'a pas de colonne de statut de paiement) :
@@ -107,18 +108,19 @@ def calculer(lignes: list[dict]) -> dict:
     }
 
 
-def _lire_registrations() -> list[dict]:
-    """Lit les inscriptions Rimel (colonnes neutres), page par page, et les regroupe en comptages."""
-    url = os.environ.get("SUPABASE_URL", "").rstrip("/")
-    cle = os.environ.get("SUPABASE_KEY", "")
+def _url_rest(variable_url: str, variable_cle: str) -> tuple[str, str]:
+    url = os.environ.get(variable_url, "").strip().rstrip("/")
+    cle = os.environ.get(variable_cle, "").strip()
     if not url or not cle:
-        raise RuntimeError("SUPABASE_URL / SUPABASE_KEY absents")
+        raise RuntimeError(f"{variable_url} / {variable_cle} absents")
     if not url.endswith("/rest/v1"):  # accepte l'URL du projet comme celle de l'API REST
         url += "/rest/v1"
-    requete = (f"{url}/registrations?select=distance,paiement,nat,sexe,dossard"
-               f"&distance={urllib.parse.quote(FILTRE_RIMEL)}&order=id")
+    return url, cle
 
-    groupes: Counter = Counter()
+
+def _lire_pagine(requete: str, cle: str) -> list[dict]:
+    """Toutes les lignes d'une requête PostgREST, page par page."""
+    lignes: list[dict] = []
     debut = 0
     while True:
         entetes = {"apikey": cle, "Authorization": f"Bearer {cle}", "Accept": "application/json",
@@ -127,15 +129,52 @@ def _lire_registrations() -> list[dict]:
             if reponse.status not in (200, 206):
                 raise RuntimeError(f"HTTP {reponse.status}")
             lot = json.load(reponse)
-        for l in lot:
-            groupes[(l.get("distance"), l.get("paiement"), bool(str(l.get("dossard") or "").strip()),
-                     l.get("nat"), l.get("sexe"))] += 1
+        lignes.extend(lot)
         if len(lot) < TAILLE_PAGE:
-            break
+            return lignes
         debut += TAILLE_PAGE
 
+
+def _regrouper(lignes: list[dict]) -> list[dict]:
+    """Regroupe les inscriptions (colonnes neutres) en comptages pour `calculer`."""
+    groupes: Counter = Counter()
+    for l in lignes:
+        groupes[(l.get("distance"), l.get("paiement"), bool(str(l.get("dossard") or "").strip()),
+                 l.get("nat"), l.get("sexe"))] += 1
     return [{"distance": d, "paiement": p, "dossard_attribue": a, "nat": n, "sexe": sx, "n": nb}
             for (d, p, a, n, sx), nb in groupes.items()]
+
+
+def _lire_registrations() -> list[dict]:
+    """Inscriptions Rimel de la base client (table `registrations`), colonnes neutres uniquement."""
+    url, cle = _url_rest("SUPABASE_URL", "SUPABASE_KEY")
+    return _lire_pagine(f"{url}/registrations?select=distance,paiement,nat,sexe,dossard"
+                        f"&distance={urllib.parse.quote(FILTRE_RIMEL)}&order=id", cle)
+
+
+def _lire_copie_secours() -> list[dict]:
+    """Inscriptions Rimel de la copie de secours (base OPS, table `registration_snapshot`).
+    Chaque ligne y stocke l'inscription complète dans `data` (jsonb) : seules les colonnes neutres
+    en sont extraites côté PostgREST, aucune donnée personnelle ne transite."""
+    url, cle = _url_rest("OPS_SUPABASE_URL", "OPS_SUPABASE_KEY")
+    colonnes = ",".join(f"{c}:data->>{c}" for c in ("distance", "paiement", "nat", "sexe", "dossard"))
+    return _lire_pagine(f"{url}/registration_snapshot?select={colonnes}"
+                        f"&data->>distance={urllib.parse.quote(FILTRE_RIMEL)}&order=registration_id", cle)
+
+
+def _lire_inscriptions() -> tuple[list[dict], str]:
+    """Base client d'abord ; si elle est en erreur ou vide (accès RLS retiré), copie de secours OPS."""
+    try:
+        lignes = _lire_registrations()
+        if lignes:
+            return lignes, "supabase"
+        logger.warning("Base client vide (RLS ?) : bascule sur la copie de secours OPS")
+    except Exception as e:
+        logger.warning("Base client injoignable (%s) : bascule sur la copie de secours OPS", e)
+    lignes = _lire_copie_secours()
+    if not lignes:
+        raise RuntimeError("copie de secours OPS vide")
+    return lignes, "secours"
 
 
 def _instantane() -> dict | None:
@@ -147,19 +186,20 @@ def _instantane() -> dict | None:
 
 
 def statistiques() -> dict:
-    """Stats en direct (cache 25 s) ; repli sur le dernier instantané si Supabase est injoignable."""
+    """Stats en direct (cache 25 s) : base client, sinon copie de secours OPS, sinon dernier instantané local."""
     with _verrou:
         if _cache["donnees"] and time.monotonic() - _cache["horodatage"] < DUREE_CACHE:
             return _cache["donnees"]
         try:
-            donnees = {**calculer(_lire_registrations()), "source": "supabase"}
+            lignes, source = _lire_inscriptions()
+            donnees = {**calculer(_regrouper(lignes)), "source": source}
             try:
                 with open(FICHIER_INSTANTANE, "w", encoding="utf-8") as f:
                     json.dump(donnees, f, ensure_ascii=False)
             except OSError:
                 logger.warning("Instantané des stats non enregistré")
         except Exception as e:
-            logger.warning("Supabase injoignable (%s) : repli sur l'instantané local", e)
+            logger.warning("Aucune base disponible (%s) : repli sur l'instantané local", e)
             instantane = _instantane()
             donnees = {**instantane, "source": "instantane"} if instantane else {"disponible": False, "source": "aucune"}
         _cache.update(horodatage=time.monotonic(), donnees=donnees)
